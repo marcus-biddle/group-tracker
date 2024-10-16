@@ -8,6 +8,7 @@ import {
 import './index.css'
 import { Activity } from './sections/Activity/Activity.jsx';
 import { Home } from './sections/Home/Home.jsx';
+import { AuthForm } from './sections/Auth/AuthForm.jsx';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path: "activities/:activityId",
         element: <Activity />
+      },
+      {
+        path: "/auth",
+        element: <AuthForm />
       },
     ]
   },
