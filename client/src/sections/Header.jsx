@@ -16,7 +16,7 @@ export const Header = () => {
   return (
     <div className=' flex items-center justify-between p-6 z-50'>
       <button className='bg-transparent p-0 focus:outline-none' onClick={goHome}>
-        <h2 className='text-lg font-mono'>GroupTracker.io</h2>
+        <h2 className='text-lg font-mono text-white'>GroupTracker.io</h2>
       </button>
         
         <button onClick={() => setIsOpen(!isOpen)} className=' bg-black'>

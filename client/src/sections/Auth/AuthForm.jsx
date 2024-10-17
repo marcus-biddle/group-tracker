@@ -7,6 +7,8 @@ export const AuthForm = () => {
   const [ newUserCreated, setNewUserCreated ] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [ firstname, setFirstname ] = useState('');
+  const [ lastname, setLastname ] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const navigate = useNavigate();
 
@@ -15,10 +17,13 @@ export const AuthForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const loginPayload = { email, password };
+    const signUpPayload = { email, password, firstname, lastname };
+
     if (isLogin) {
       // Handle login logic here
       // console.log('Login:', { email, password });
-      const data = await loginUser({ email, password });
+      const data = await loginUser(loginPayload);
       console.log('User logged in: ', data);
       navigate('/')
     } else {
@@ -28,7 +33,7 @@ export const AuthForm = () => {
       }
       // Handle sign-up logic here
       // console.log('Sign Up:', { email, password });
-      const data = await registerUser({ email, password });
+      const data = await registerUser(signUpPayload);
       console.log('User register: ', data);
       setIsLogin(true);
       setNewUserCreated(true);
@@ -78,20 +83,51 @@ export const AuthForm = () => {
 
           {/* Confirm Password Field (Only for Signup) */}
           {!isLogin && (
-            <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm Password
-              </label>
-              <input
-                id="confirmPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="••••••••"
-              />
-            </div>
+            <>
+              <div>
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="••••••••"
+                />
+              </div>
+              <div>
+                <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
+                  First Name
+                </label>
+                <input
+                  id="firstname"
+                  type="text"
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="First Name"
+                />
+              </div>
+              <div>
+                <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
+                  Last Name
+                </label>
+                <input
+                  id="lastname"
+                  type="text"
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  required
+                  className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Last Name"
+                />
+              </div>
+            </>
+            
           )}
 
           {/* Submit Button */}

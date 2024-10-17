@@ -41,13 +41,13 @@ const comparePasswords = async (password, hashedPassword) => {
 
 // Route to create a new user (signup)
 app.post('/api/users/signup', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, firstname, lastname } = req.body;
   const hashedPassword = await hashPassword(password);
 
   try {
     const result = await pool.query(
-      'INSERT INTO public.users (email, password) VALUES ($1, $2) RETURNING id, email',
-      [email, hashedPassword]
+      'INSERT INTO public.users (email, password, firstname, lastname) VALUES ($1, $2, $3, $4) RETURNING id, email, firstname, lastname',
+      [email, hashedPassword, firstname, lastname]
     );
     return res.status(201).json(result.rows[0]);  // Return the newly created user
   } catch (error) {
@@ -105,6 +105,39 @@ app.get('/api/exercises', async (req, res) => {
     console.error('Error fetching exercises:', error);
     res.status(500).json({ message: 'Internal server error.' });
   }
+});
+
+// Route to Get exercise log of specific exercise
+app.post('/api/exercises/log', async (req, res) => {
+  const { exerciseId, month, year } = req.body;
+
+    try {
+        // Base query without optional filters
+        let query = `
+        SELECT 
+            u.id AS user_id,
+            CONCAT(u.firstname, ' ', u.lastname) AS fullname,
+            SUM(el.exercise_count) AS total_exercise_count
+        FROM 
+            public.exercise_log el
+        JOIN 
+            public.users u
+            ON el.user_id = u.id
+        WHERE 
+            el.exercise_id = $1
+            AND EXTRACT(MONTH FROM el.date) = $2   
+            AND EXTRACT(YEAR FROM el.date) = $3    
+        GROUP BY 
+            u.id, u.firstname, u.lastname;
+        `
+
+        // Execute the query
+        const result = await pool.query(query, [exerciseId, month, year]);
+        res.status(200).json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Failed to retrieve exercises' });
+    }
 });
 
 app.listen(PORT, () => {

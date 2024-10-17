@@ -13,6 +13,7 @@ export const loginUser = async (data: AuthData) => {
     const response = await axiosInstance.post('/users/login', data);
     // Save JWT token to localStorage
     localStorage.setItem('token', response.data.token);
+    localStorage.setItem('user_id', response.data.user.id);
     return response.data;
   } catch (error) {
     throw new Error(error.response?.data?.message || 'Login failed');

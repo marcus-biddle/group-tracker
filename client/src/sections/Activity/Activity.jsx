@@ -1,24 +1,29 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import { TfiBolt, TfiFilter, TfiBackRight } from "react-icons/tfi";
 import { FilterModal } from '../../components/FilterModal';
 import { AddModal } from '../../components/AddModal';
-
-const data = [
-  { name: 'John Doe', count: 5 },
-  { name: 'Jane Smith', count: 3 },
-  { name: 'Alex Johnson', count: 8 },
-];
+import { retrieveExerciseLog } from '../../api/exerciseApi';
 
 export const Activity = () => {
-  const { activityId } = useParams();
-  const navigate = useNavigate();
+  const { activityId, activityname } = useParams();
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
+  const [ month, setMonth ] = useState(new Date().getMonth() + 1);
+  const [ year, setYear ] = useState(new Date().getFullYear());
+  const [ exerciseLog, setExerciseLog ] = useState([]);
 
-  const goBack = () => {
-    navigate("/");
+  console.log(month, year)
+
+  const fetchExerciseLog = async () => {
+    const data = await retrieveExerciseLog({ exerciseId: activityId, month: month, year: year });
+    console.log('fetching log: ', data);
+    setExerciseLog(data);
   }
+
+  useEffect(() => {
+    fetchExerciseLog();
+  }, [])
 
   return (
     <div className=' relative min-h-[100vh]'>
@@ -27,7 +32,7 @@ export const Activity = () => {
         <p className=' font-extralight'>Go Back</p>
       </button> */}
       <div className=' p-6 '>
-        <h1 className=' capitalize font-bold'>{activityId}</h1>
+        <h1 className=' capitalize font-bold'>{activityname}</h1>
         <div className=' flex justify-between items-baseline'>
           <p className=' text-neutral-600 font-mono text-lg'>Top Player: Cal Ochoa</p>
           <button onClick={() => setShowAddModal(true)} className='min-w-16 h-10 bg-black rounded-lg text-center flex justify-center items-center border border-black shadow-2xl'>
@@ -55,10 +60,10 @@ export const Activity = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((item, index) => (
+              {exerciseLog.map((person, index) => (
                 <tr key={index} className="hover:bg-gray-100 border-b-2">
-                  <td className="p-4 text-center text-lg">{item.name}</td>
-                  <td className="p-4 text-center text-lg">{item.count}</td>
+                  <td className="p-4 text-center text-lg">{person.fullname}</td>
+                  <td className="p-4 text-center text-lg">{person.total_exercise_count}</td>
                 </tr>
               ))}
             </tbody>

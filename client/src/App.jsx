@@ -10,18 +10,18 @@ import { isAuthenticated } from './helpers/authHelper'
 
 function App() {
   const COLOR_PATH_CHART = [
-    {params: 'pushups', BgColor: 'bg-yellow-300'},
-    {params: 'pullups', BgColor: 'bg-blue-500'},
-    {params: 'running', BgColor: 'bg-orange-500'},
+    {params: '1', BgColor: 'bg-teal-300'},
+    {params: '2', BgColor: 'bg-red-300'},
+    {params: '3', BgColor: 'bg-green-500'},
   ];
 
   const matches = useMatches();
   const matchedPath = COLOR_PATH_CHART.find(item => item.params === matches[0].params.activityId);
 
-  // console.log(isAuthenticated());
+  // console.log(matches[0].params.activityId);
 
   return (
-    <div className={`${matchedPath ? matchedPath.BgColor : 'bg-white'} min-h-[100vh]`}>
+    <div className={`${matchedPath ? matchedPath.BgColor : ' bg-neutral-900'} min-h-screen`}>
       <Header />
       <div className=''>
         <Outlet />
