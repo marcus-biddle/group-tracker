@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
+import { loginUser, registerUser } from '../../api/authApi';
+import { useNavigate } from 'react-router';
 
 export const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
+  const [ newUserCreated, setNewUserCreated ] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const navigate = useNavigate();
 
   const toggleForm = () => setIsLogin(!isLogin); // Toggle between login and signup
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (isLogin) {
       // Handle login logic here
-      console.log('Login:', { email, password });
+      // console.log('Login:', { email, password });
+      const data = await loginUser({ email, password });
+      console.log('User logged in: ', data);
+      navigate('/')
     } else {
       if (password !== confirmPassword) {
         alert("Passwords don't match!");
         return;
       }
       // Handle sign-up logic here
-      console.log('Sign Up:', { email, password });
+      // console.log('Sign Up:', { email, password });
+      const data = await registerUser({ email, password });
+      console.log('User register: ', data);
+      setIsLogin(true);
+      setNewUserCreated(true);
     }
   };
 
@@ -29,6 +41,7 @@ export const AuthForm = () => {
         <h2 className="text-2xl font-bold text-center mb-6">
           {isLogin ? 'Login' : 'Create Account'}
         </h2>
+        {newUserCreated && <p>New user created. Please login.</p>}
         
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Email Field */}

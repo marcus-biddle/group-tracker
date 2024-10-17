@@ -6,6 +6,7 @@ import { Header } from './sections/Header'
 import { Introduction } from './sections/Home/Introduction'
 import { IntroList } from './sections/Home/IntroList'
 import { Outlet, useLocation, useMatches } from 'react-router'
+import { isAuthenticated } from './helpers/authHelper'
 
 function App() {
   const COLOR_PATH_CHART = [
@@ -16,6 +17,8 @@ function App() {
 
   const matches = useMatches();
   const matchedPath = COLOR_PATH_CHART.find(item => item.params === matches[0].params.activityId);
+
+  // console.log(isAuthenticated());
 
   return (
     <div className={`${matchedPath ? matchedPath.BgColor : 'bg-white'} min-h-[100vh]`}>

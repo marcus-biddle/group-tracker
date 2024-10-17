@@ -22,14 +22,14 @@ export const Activity = () => {
 
   return (
     <div className=' relative min-h-[100vh]'>
-      <button onClick={() => goBack()} className=' bg-transparent flex justify-left mx-6 w-28 py-0 pl-0'>
+      {/* <button onClick={() => goBack()} className=' bg-transparent flex justify-left mx-6 w-28 py-0 pl-0'>
         <TfiBackRight className=' w-4 h-4' />
         <p className=' font-extralight'>Go Back</p>
-      </button>
+      </button> */}
       <div className=' p-6 '>
-        <h1 className=' uppercase tracking-widest'>{activityId}</h1>
-        <div className=' flex justify-between'>
-          <h1 className=' text-neutral-600 font-light'>test 1 2 3...</h1>
+        <h1 className=' capitalize font-bold'>{activityId}</h1>
+        <div className=' flex justify-between items-baseline'>
+          <p className=' text-neutral-600 font-mono text-lg'>Top Player: Cal Ochoa</p>
           <button onClick={() => setShowAddModal(true)} className='min-w-16 h-10 bg-black rounded-lg text-center flex justify-center items-center border border-black shadow-2xl'>
             <TfiBolt className=' w-6 h-6 text-yellow-500 '/>
             <p className='text-white px-2 uppercase'>Add</p>
