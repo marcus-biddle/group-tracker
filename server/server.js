@@ -39,6 +39,23 @@ const comparePasswords = async (password, hashedPassword) => {
   return bcrypt.compare(password, hashedPassword);
 };
 
+export const authenticateToken = (req, res, next) => {
+  const token = req.headers['authorization']?.split(' ')[1]; // Expecting Bearer <token>
+
+  if (!token) {
+      return res.status(401).json({ message: 'No token provided, authorization denied.' });
+  }
+
+  try {
+      // Verify the token using your secret
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      req.user = decoded; // Attach the decoded token payload (e.g., user_id) to req.user
+      next(); // Proceed to the next middleware or route handler
+  } catch (err) {
+      return res.status(403).json({ message: 'Invalid token, authorization denied.' });
+  }
+};
+
 // Route to create a new user (signup)
 app.post('/api/users/signup', async (req, res) => {
   const { email, password, firstname, lastname } = req.body;
@@ -139,6 +156,37 @@ app.post('/api/exercises/log', async (req, res) => {
         res.status(500).json({ error: 'Failed to retrieve exercises' });
     }
 });
+
+// Update a user's log
+app.post('/api/exercises/log/insert', authenticateToken, async (req, res) => {
+  const { user_id, exercise_count, date, exercise_id } = req.body;
+  console.log({ user_id, exercise_count, date, exercise_id })
+
+  try {
+      // Build the SQL update query
+      const query = `
+      INSERT INTO public.exercise_log (user_id, exercise_id, exercise_count, date)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;  
+      `;
+
+      const result = await pool.query(query, [
+          user_id,
+          exercise_id,
+          exercise_count,
+          date
+      ]);
+
+      if (result.rowCount === 0) {
+          return res.status(404).json({ message: 'Exercise log not found or user does not match.' });
+      }
+
+      res.status(200).json(result.rows[0]);
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error updating exercise log' });
+  }
+})
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

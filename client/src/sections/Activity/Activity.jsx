@@ -5,6 +5,21 @@ import { FilterModal } from '../../components/FilterModal';
 import { AddModal } from '../../components/AddModal';
 import { retrieveExerciseLog } from '../../api/exerciseApi';
 
+export const months = [
+  { name: 'January', value: 1 },
+  { name: 'February', value: 2 },
+  { name: 'March', value: 3 },
+  { name: 'April', value: 4 },
+  { name: 'May', value: 5 },
+  { name: 'June', value: 6 },
+  { name: 'July', value: 7 },
+  { name: 'August', value: 8 },
+  { name: 'September', value: 9 },
+  { name: 'October', value: 10 },
+  { name: 'November', value: 11 },
+  { name: 'December', value: 12 },
+];
+
 export const Activity = () => {
   const { activityId, activityname } = useParams();
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -21,9 +36,19 @@ export const Activity = () => {
     setExerciseLog(data);
   }
 
+  const handleSave = (selectedMonth, selectedYear) => {
+    if (selectedMonth === month && selectedYear === year) {
+      setShowFilterModal(false);
+      return;
+    }
+    setMonth(selectedMonth);
+    setYear(selectedYear);
+    setShowFilterModal(false);
+  }
+
   useEffect(() => {
     fetchExerciseLog();
-  }, [])
+  }, [month, year])
 
   return (
     <div className=' relative min-h-[100vh]'>
@@ -44,7 +69,7 @@ export const Activity = () => {
 
       <div className='bg-white rounded-t-3xl h-[100vh] p-8'>
         <div className='flex justify-between items-center'>
-          <h2 className='text-lg tracking-wider font-semibold'>October 2024</h2>
+          <h2 className='text-lg tracking-wider font-semibold'>{months.find(m => m.value === month)?.name} {year}</h2>
           <button onClick={() => setShowFilterModal(true)} className=' bg-slate-300'>
             <TfiFilter className='w-full h-full' />
           </button>
@@ -70,7 +95,7 @@ export const Activity = () => {
           </table>
         </div>
       </div>
-      <FilterModal showModal={showFilterModal} setShowModal={setShowFilterModal} />
+      <FilterModal showModal={showFilterModal} setShowModal={setShowFilterModal} onSave={handleSave} />
       <AddModal showModal={showAddModal} setShowModal={setShowAddModal} />
     </div>
   )

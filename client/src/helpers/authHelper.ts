@@ -11,6 +11,11 @@ export const getToken = (): string | null => {
   return token ? token : null;
 };
 
+export const getUserId = (): string | null => {
+  const id = localStorage.getItem('user_id');
+  return id ? id : null;
+};
+
 // Helper to check if token is expired
 export const isTokenExpired = (): boolean => {
   const token = getToken();
