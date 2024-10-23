@@ -16,13 +16,13 @@ export const Header = () => {
   return (
     <div className=' flex items-center justify-between p-6 z-50'>
       <button className='bg-transparent p-0 focus:outline-none' onClick={goHome}>
-        <h2 className='text-lg font-mono text-white'>GroupTracker.io</h2>
+        <h2 className='text-lg font-mono text-black'>GroupTracker.io</h2>
       </button>
         
-        <button onClick={() => setIsOpen(!isOpen)} className=' bg-black'>
+        <button onClick={() => setIsOpen(!isOpen)} className=' bg-rose-500 border border-rose-600 rounded-md'>
           {
             !isOpen ?
-            <TfiMenu className=' w-full h-full text-white' /> :
+            <TfiMenu className=' w-full h-full text-black' /> :
             <TfiClose className=' w-full h-full' />
           }
           

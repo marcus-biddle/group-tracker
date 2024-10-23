@@ -4,6 +4,7 @@ import { TfiBolt, TfiFilter, TfiBackRight } from "react-icons/tfi";
 import { FilterModal } from '../../components/FilterModal';
 import { AddModal } from '../../components/AddModal';
 import { retrieveExerciseLog } from '../../api/exerciseApi';
+import { isAuthenticated } from '../../helpers/authHelper';
 
 export const months = [
   { name: 'January', value: 1 },
@@ -48,7 +49,7 @@ export const Activity = () => {
 
   useEffect(() => {
     fetchExerciseLog();
-  }, [month, year])
+  }, [month, year, showAddModal])
 
   return (
     <div className=' relative min-h-[100vh]'>
@@ -60,33 +61,37 @@ export const Activity = () => {
         <h1 className=' capitalize font-bold'>{activityname}</h1>
         <div className=' flex justify-between items-baseline'>
           <p className=' text-neutral-600 font-mono text-lg'>Top Player: Cal Ochoa</p>
-          <button onClick={() => setShowAddModal(true)} className='min-w-16 h-10 bg-black rounded-lg text-center flex justify-center items-center border border-black shadow-2xl'>
-            <TfiBolt className=' w-6 h-6 text-yellow-500 '/>
-            <p className='text-white px-2 uppercase'>Add</p>
-          </button>
         </div>
       </div>
 
-      <div className='bg-white rounded-t-3xl h-[100vh] p-8'>
+      <div className='bg-neutral-800 rounded-t-3xl h-[100vh] p-8 text-gray-400'>
         <div className='flex justify-between items-center'>
-          <h2 className='text-lg tracking-wider font-semibold'>{months.find(m => m.value === month)?.name} {year}</h2>
-          <button onClick={() => setShowFilterModal(true)} className=' bg-slate-300'>
-            <TfiFilter className='w-full h-full' />
-          </button>
-          
+          <h2 className='text-lg text-white tracking-wider font-semibold'>{months.find(m => m.value === month)?.name} {year}</h2>
+          <div className='flex gap-2'>
+            <button onClick={() => setShowFilterModal(true)} className=' bg-rose-500 shadow-xl border border-rose-600 rounded-md text-center flex justify-center items-center'>
+              <TfiFilter className='w-full h-full text-neutral-800' />
+            </button>
+            {
+              isAuthenticated() &&
+              <button onClick={() => setShowAddModal(true)} className='min-w-16 h-10 bg-rose-500 rounded-md text-center flex justify-center items-center border border-rose-600 shadow-xl'>
+                <TfiBolt className=' w-6 h-6 text-neutral-800'/>
+                {/* <p className='text-white px-2 uppercase'>Add</p> */}
+              </button>
+            }
+          </div>
         </div>
         
         <div className="flex justify-center">
           <table className="min-w-full table-auto rounded-lg border-collapse  mt-6">
             <thead className=''>
               <tr className="">
-                <th className="bg-neutral-200 rounded-md px-4 py-2">Name</th>
-                <th className="bg-neutral-200 rounded-md px-4 py-2">Count</th>
+                <th className=" rounded-md px-4 py-2">Name</th>
+                <th className="rounded-md px-4 py-2">Count</th>
               </tr>
             </thead>
             <tbody>
               {exerciseLog.map((person, index) => (
-                <tr key={index} className="hover:bg-gray-100 border-b-2">
+                <tr key={index} className="hover:bg-cyan-300 border-b-2 border-b-cyan-500">
                   <td className="p-4 text-center text-lg">{person.fullname}</td>
                   <td className="p-4 text-center text-lg">{person.total_exercise_count}</td>
                 </tr>

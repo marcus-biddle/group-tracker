@@ -7,10 +7,10 @@ export const IntroList = ({ exerciseList }) => {
   return (
     <div className='py-6'>
         {/* <SearchBar /> */}
-        <ul className=' space-y-6 p-6 bg-neutral-800 rounded-md h-screen'>
+        <ul className=' space-y-6 p-6 h-screen'>
             {exerciseList.map((item, index) => (
-                <NavLink to={`activities/${item.exercise_id}/${item.exercise_name}`} key={index} className=' border rounded-lg p-6 border-neutral-500 bg-neutral-500 text-white flex items-center justify-between shadow-lg'>
-                    <li className={'pr-40 capitalize w-10'}>
+                <NavLink to={`activities/${item.exercise_id}/${item.exercise_name}`} key={index} className=' border rounded-md p-6 border-rose-600 bg-rose-500 text-neutral-800 flex items-center justify-between shadow-md'>
+                    <li className={'pr-40 capitalize w-10 tracking-widest'}>
                         {item.exercise_name}
                     </li>
                     <TfiControlPlay className=' w-6 h-6' />

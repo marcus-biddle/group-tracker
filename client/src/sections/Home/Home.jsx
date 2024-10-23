@@ -21,7 +21,7 @@ export const Home = () => {
     }, []);
 
   return (
-    <div className='p-6'>
+    <div className='bg-neutral-800'>
         <Introduction activityCount={exerciseList.length} />
         <IntroList exerciseList={exerciseList} />
     </div>

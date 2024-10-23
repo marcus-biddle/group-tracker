@@ -3,7 +3,7 @@ import { logExercise } from '../api/exerciseApi';
 import { getUserId } from '../helpers/authHelper';
 import { useParams } from 'react-router';
 
-export const AddForm = () => {
+export const AddForm = ({ setShowModal }) => {
   const { activityId } = useParams();
   const [numberValue, setNumberValue] = useState('');
   const [isToday, setIsToday] = useState(true); // True for today, false for selecting a date
@@ -30,6 +30,8 @@ export const AddForm = () => {
     setNumberValue('');
     setIsToday(true);
     setSelectedDate('');
+
+    setShowModal(false);
   };
 
   return (
