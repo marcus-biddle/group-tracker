@@ -1,4 +1,4 @@
-import pool from './db';
+import { pool } from "./db.js";
 
 export const createTables = async () => {
   try {
@@ -48,7 +48,5 @@ export const createTables = async () => {
     console.log('Tables created successfully');
   } catch (error) {
     console.error('Error creating tables:', error);
-  } finally {
-    pool.end();
   }
 };
