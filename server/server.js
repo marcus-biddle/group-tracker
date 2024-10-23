@@ -11,6 +11,9 @@ dotenv.config();  // Load environment variables
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+createTables().then(() => {
+  console.log('Database setup completed.');
+
 // Middleware to parse JSON request bodies
 app.use(express.json());
 app.use(cors());
@@ -39,7 +42,7 @@ const comparePasswords = async (password, hashedPassword) => {
   return bcrypt.compare(password, hashedPassword);
 };
 
-export const authenticateToken = (req, res, next) => {
+const authenticateToken = (req, res, next) => {
   const token = req.headers['authorization']?.split(' ')[1]; // Expecting Bearer <token>
 
   if (!token) {
@@ -190,4 +193,8 @@ app.post('/api/exercises/log/insert', authenticateToken, async (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
+});
+
+}).catch((err) => {
+  console.error('Failed to set up the database:', err);
 });

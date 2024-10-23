@@ -1,6 +1,6 @@
 import pool from './db';
 
-(async () => {
+export const createTables = async () => {
   try {
     await pool.query(`
     CREATE TABLE IF NOT EXISTS public.users
@@ -51,4 +51,4 @@ import pool from './db';
   } finally {
     pool.end();
   }
-})();
+};
