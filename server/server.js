@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import { pool } from './db.js';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import { createTables } from './createTables.js';
 // import authRoutes from './routes/auth.js'
 
 dotenv.config();  // Load environment variables
