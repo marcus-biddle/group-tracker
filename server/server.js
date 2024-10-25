@@ -7,7 +7,7 @@ import jwt from 'jsonwebtoken';
 // import authRoutes from './routes/auth.js'
 
 dotenv.config();  // Load environment variables
-
+ 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
