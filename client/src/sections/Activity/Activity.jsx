@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { TfiBolt, TfiFilter, TfiBackRight } from "react-icons/tfi";
+import { TfiBolt, TfiFilter } from "react-icons/tfi";
 import { FilterModal } from '../../components/FilterModal';
 import { AddModal } from '../../components/AddModal';
 import { retrieveExerciseLog } from '../../api/exerciseApi';
