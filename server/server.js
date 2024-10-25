@@ -4,14 +4,12 @@ import bcrypt from 'bcrypt';
 import { pool } from './db.js';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
-import { createTables } from './createTables.js';
 // import authRoutes from './routes/auth.js'
 
 dotenv.config();  // Load environment variables
 
 const app = express();
 const PORT = process.env.PORT || 5000;
-
 
 // Middleware to parse JSON request bodies
 app.use(express.json());

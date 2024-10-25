@@ -1,4 +1,3 @@
-// db.js (ES Modules)
 import pkg from 'pg';  // Import the entire module
 import dotenv from 'dotenv';
 
