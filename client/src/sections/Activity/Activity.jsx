@@ -87,7 +87,7 @@ export const Activity = () => {
             </thead>
             <tbody>
               {exerciseLog.map((person, index) => (
-                <tr key={index} className="hover:bg-primary border-b-2 border-b-primary rounded-md">
+                <tr key={index} className="hover:bg-primary border-b-2 border-b-primary rounded-md text-primaryText">
                   <td className="p-4 text-center text-lg">{person.fullname}</td>
                   <td className="p-4 text-center text-lg">{person.total_exercise_count}</td>
                 </tr>
