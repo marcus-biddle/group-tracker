@@ -14,8 +14,8 @@ export const FilterModal = ({ showModal, setShowModal, onSave }) => {
     return (
       <div className="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center z-50">
         <div className="bg-secondaryMenu p-6 rounded-lg shadow-lg max-w-md mx-auto">
-          <Header level='h3' color='primaryText'>What did you do today?</Header>
-          <Text size='small' color='mutedText'>Update your count below.</Text>
+          <Header level='h3' color='primaryText'>Filter Table</Header>
+          <Text size='small' color='mutedText'>Choose a month and year to view.</Text>
 
           {/* Month Selection Dropdown */}
           <div className=" text-secondaryText py-4">

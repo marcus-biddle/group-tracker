@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { isAuthenticated } from '../helpers/authHelper';
+import { getUserId, isAuthenticated } from '../helpers/authHelper';
 import Header from './Header';
 import Text from './Text';
 import { useParams } from 'react-router';
+import { logExercise } from '../api/exerciseApi';
 
 export const AddModal = ({ showModal, setShowModal }) => {
     if (!showModal) return null; // Return null if modal is not shown

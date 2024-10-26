@@ -5,6 +5,7 @@ import { retrieveExercises } from '../../api/exerciseApi';
 
 export const Home = () => {
   const [ exerciseList, setExerciseList ] = useState([]);
+  const [ playerList, setPlayerList ] = useState([]);
 
     const fetchExercises = async () => {
         try {
@@ -16,13 +17,24 @@ export const Home = () => {
         }
     }
 
+    const fetchPlayerList = async () => {
+      try {
+        const data = [];
+        console.log('Successfully retrieved players:', data);
+        setPlayerList(data);
+      } catch (error) {
+        console.error('Error fetching players:', error);
+      }
+    }
+
     useEffect(() => {
         fetchExercises();
+        fetchPlayerList();
     }, []);
 
   return (
     <div className=''>
-        <Introduction activityCount={exerciseList.length} />
+        <Introduction activityCount={exerciseList.length} playerCount={playerList.length} />
         <IntroList exerciseList={exerciseList} />
     </div>
   )

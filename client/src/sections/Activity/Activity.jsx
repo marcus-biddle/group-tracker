@@ -58,7 +58,7 @@ export const Activity = () => {
     <div className=' relative min-h-[100vh]'>
       <div className=' p-6 '>
         <Header level="h1" color="primaryText">{activityname}</Header>
-        <Text size='large' color='secondaryText'>Top Player: Cal Ochoa</Text>
+        {/* <Text size='large' color='secondaryText'>Top Player: Cal Ochoa</Text> */}
       </div>
 
       <div className='bg-neutral-800 rounded-t-3xl h-[100vh] p-8 text-gray-400'>
@@ -87,7 +87,7 @@ export const Activity = () => {
             </thead>
             <tbody>
               {exerciseLog.map((person, index) => (
-                <tr key={index} className="hover:bg-cyan-300 border-b-2 border-b-cyan-500">
+                <tr key={index} className="hover:bg-primary border-b-2 border-b-primary rounded-md">
                   <td className="p-4 text-center text-lg">{person.fullname}</td>
                   <td className="p-4 text-center text-lg">{person.total_exercise_count}</td>
                 </tr>

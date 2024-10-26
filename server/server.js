@@ -188,6 +188,25 @@ app.post('/api/exercises/log/insert', authenticateToken, async (req, res) => {
   }
 })
 
+app.get('/api/players', async (req, res) => {
+  try {
+    const query = `
+      SELECT firstname, lastname FROM public.users;
+    `;
+
+    const result = await pool.query(query);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No players found.' });
+    }
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error fetching players:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
