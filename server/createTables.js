@@ -18,7 +18,7 @@ export const createTables = async () => {
     await pool.query(`
     CREATE TABLE IF NOT EXISTS public.exercise_types
     (
-        exercise_id integer NOT NULL DEFAULT nextval('exercise_types_exercise_id_seq'::regclass),
+        exercise_id integer NOT NULL DEFAULT ,
         exercise_name character varying(255) COLLATE pg_catalog."default" NOT NULL,
         CONSTRAINT exercise_types_pkey PRIMARY KEY (exercise_id)
     )

@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { loginUser, registerUser } from '../../api/authApi';
 import { useNavigate } from 'react-router';
+import Header from '../../components/Header';
+import Text from '../../components/Text';
+import Button from '../../components/Button';
 
 export const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true); // State to toggle between login and signup
@@ -41,17 +44,14 @@ export const AuthForm = () => {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          {isLogin ? 'Login' : 'Create Account'}
-        </h2>
-        {newUserCreated && <p>New user created. Please login.</p>}
+    <div className="bg-secondaryMenu p-6 rounded-md space-y-8 mx-6">
+      <Header level='h1' color='primaryText'>{isLogin ? 'Login' : 'Create Account'}</Header>
+        {newUserCreated && <Text size='medium' color='mutedText'>New user created. Please login.</Text>}
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 text-secondaryText">
           {/* Email Field */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="email" className="block text-sm font-medium">
               Email
             </label>
             <input
@@ -67,7 +67,7 @@ export const AuthForm = () => {
 
           {/* Password Field */}
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="password" className="block text-sm font-medium ">
               Password
             </label>
             <input
@@ -85,7 +85,7 @@ export const AuthForm = () => {
           {!isLogin && (
             <>
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium">
                   Confirm Password
                 </label>
                 <input
@@ -99,7 +99,7 @@ export const AuthForm = () => {
                 />
               </div>
               <div>
-                <label htmlFor="firstname" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="firstname" className="block text-sm font-medium ">
                   First Name
                 </label>
                 <input
@@ -113,7 +113,7 @@ export const AuthForm = () => {
                 />
               </div>
               <div>
-                <label htmlFor="lastname" className="block text-sm font-medium text-gray-700">
+                <label htmlFor="lastname" className="block text-sm font-medium">
                   Last Name
                 </label>
                 <input
@@ -134,7 +134,7 @@ export const AuthForm = () => {
           <div>
             <button
               type="submit"
-              className="w-full bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
             >
               {isLogin ? 'Sign In' : 'Sign Up'}
             </button>
@@ -144,30 +144,30 @@ export const AuthForm = () => {
         {/* Toggle Form Button */}
         <div className="text-center mt-4">
           {isLogin ? (
-            <p className="text-sm">
+            <Text size='small' color='mutedText'>
               Don't have an account?{' '}
-              <button
+              <Button
+                size='small'
                 type="button"
                 onClick={toggleForm}
-                className="text-indigo-600 hover:underline"
               >
                 Create Account
-              </button>
-            </p>
+              </Button>
+            </Text>
           ) : (
-            <p className="text-sm">
+            <Text size='small' color='mutedText'>
               Already have an account?{' '}
-              <button
+              <Button
+                size='small'
                 type="button"
                 onClick={toggleForm}
                 className="text-indigo-600 hover:underline"
               >
                 Sign In
-              </button>
-            </p>
+              </Button>
+            </Text>
           )}
         </div>
-      </div>
     </div>
   );
 };

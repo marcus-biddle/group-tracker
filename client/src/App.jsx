@@ -2,7 +2,7 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
-import { Header } from './sections/Header'
+import { TopNav } from './sections/TopNav'
 import { Introduction } from './sections/Home/Introduction'
 import { IntroList } from './sections/Home/IntroList'
 import { Outlet, useLocation, useMatches } from 'react-router'
@@ -21,8 +21,8 @@ function App() {
   // console.log(matches[0].params.activityId);
 
   return (
-    <div className={`${matchedPath ? matchedPath.BgColor : ' bg-cyan-500'} min-h-screen`}>
-      <Header />
+    <div className={`bg-[#121212] min-h-screen`}>
+      <TopNav />
       <div className=''>
         <Outlet />
       </div>

@@ -5,6 +5,9 @@ import { FilterModal } from '../../components/FilterModal';
 import { AddModal } from '../../components/AddModal';
 import { retrieveExerciseLog } from '../../api/exerciseApi';
 import { isAuthenticated } from '../../helpers/authHelper';
+import Button from '../../components/Button';
+import Text from '../../components/Text';
+import Header from '../../components/Header';
 
 export const months = [
   { name: 'January', value: 1 },
@@ -53,30 +56,23 @@ export const Activity = () => {
 
   return (
     <div className=' relative min-h-[100vh]'>
-      {/* <button onClick={() => goBack()} className=' bg-transparent flex justify-left mx-6 w-28 py-0 pl-0'>
-        <TfiBackRight className=' w-4 h-4' />
-        <p className=' font-extralight'>Go Back</p>
-      </button> */}
       <div className=' p-6 '>
-        <h1 className=' capitalize font-bold'>{activityname}</h1>
-        <div className=' flex justify-between items-baseline'>
-          <p className=' text-neutral-600 font-mono text-lg'>Top Player: Cal Ochoa</p>
-        </div>
+        <Header level="h1" color="primaryText">{activityname}</Header>
+        <Text size='large' color='secondaryText'>Top Player: Cal Ochoa</Text>
       </div>
 
       <div className='bg-neutral-800 rounded-t-3xl h-[100vh] p-8 text-gray-400'>
         <div className='flex justify-between items-center'>
-          <h2 className='text-lg text-white tracking-wider font-semibold'>{months.find(m => m.value === month)?.name} {year}</h2>
+          <Text size='large' color='mutedText'>{months.find(m => m.value === month)?.name} {year}</Text>
           <div className='flex gap-2'>
-            <button onClick={() => setShowFilterModal(true)} className=' bg-rose-500 shadow-xl border border-rose-600 rounded-md text-center flex justify-center items-center'>
-              <TfiFilter className='w-full h-full text-neutral-800' />
-            </button>
+            <Button size='medium' onClick={() => setShowFilterModal(true)}>
+              <TfiFilter className='w-full h-full ' />
+            </Button>
             {
               isAuthenticated() &&
-              <button onClick={() => setShowAddModal(true)} className='min-w-16 h-10 bg-rose-500 rounded-md text-center flex justify-center items-center border border-rose-600 shadow-xl'>
-                <TfiBolt className=' w-6 h-6 text-neutral-800'/>
-                {/* <p className='text-white px-2 uppercase'>Add</p> */}
-              </button>
+              <Button size='medium' onClick={() => setShowAddModal(true)}>
+                <TfiBolt className=' w-6 h-6'/>
+              </Button>
             }
           </div>
         </div>
