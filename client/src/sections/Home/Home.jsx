@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Introduction } from './Introduction'
 import { IntroList } from './IntroList'
 import { retrieveExercises } from '../../api/exerciseApi';
+import { retrievePlayers } from '../../api/playersApi';
 
 export const Home = () => {
   const [ exerciseList, setExerciseList ] = useState([]);
@@ -19,7 +20,7 @@ export const Home = () => {
 
     const fetchPlayerList = async () => {
       try {
-        const data = [];
+        const data = await retrievePlayers();
         console.log('Successfully retrieved players:', data);
         setPlayerList(data);
       } catch (error) {

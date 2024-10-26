@@ -6,7 +6,7 @@ export const Introduction = ({ activityCount, playerCount }) => {
   return (
     <div className='text-center  rounded-md pt-16'>
         <Text size='medium' color='mutedText'>
-            <strong className=' font-mono font-extrabold text-[#FFFFFF]'>{playerCount}</strong> players competing in
+            <strong className=' font-mono font-extrabold text-[#FFFFFF]'>{playerCount}</strong> player{playerCount > 1 ? 's' : ''} competing in
             <strong className=' font-mono font-extrabold text-[#FFFFFF]'> {activityCount}</strong> activities.
         </Text>
         <div className='py-6'>
