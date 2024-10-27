@@ -20,7 +20,7 @@ export const IntroList = ({ exerciseList }) => {
   return (
     <div className='py-6'>
         {/* <SearchBar /> */}
-        <Slider {...settings}>
+        {/* <Slider {...settings}>
             {exerciseList.map((item, index) => (
                 <div key={index} className="relative max-w-[95%] mx-auto bg-secondaryMenu rounded-lg p-1 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary animate-spin-slow"></div>
@@ -36,8 +36,8 @@ export const IntroList = ({ exerciseList }) => {
                     </div>
                 </div>
             ))}
-        </Slider>
-        <ul className=' space-y-16 mx-12 mt-20'>
+        </Slider> */}
+        <ul className=' space-y-16 mx-12'>
             {exerciseList.map((item, index) => (
                 <div key={index} className="relative max-w-sm mx-auto bg-secondaryMenu rounded-lg p-1 overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary animate-spin-slow"></div>
