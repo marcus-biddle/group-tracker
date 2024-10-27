@@ -10,6 +10,7 @@ import Text from '../../components/Text';
 import Header from '../../components/Header';
 import { FaFire } from "react-icons/fa";
 import { retrieveStreak } from '../../api/streakApi';
+import PopupDialog from '../../components/PopupDialog';
 
 export const months = [
   { name: 'January', value: 1 },
@@ -36,7 +37,7 @@ export const Activity = () => {
   const [ month, setMonth ] = useState(currentMonth);
   const [ year, setYear ] = useState(currentYear);
   const [ exerciseLog, setExerciseLog ] = useState([]);
-  const [ streak, setStreak ] = useState([]);
+  const [ streaks, setStreaks ] = useState([]);
 
   const isFilterOn = new Date().getMonth() + 1 !== month || new Date().getFullYear() !== year;
   console.log(isFilterOn);
@@ -49,11 +50,20 @@ export const Activity = () => {
     setExerciseLog(data);
   }
 
-  const fetchStreak = async () => {
-    const data = await retrieveStreak();
-    console.log('fetching streak', data);
-    setStreak(data);
-  }
+  const fetchStreaks = async () => {
+    try {
+      const data = await retrieveStreak();
+      console.log('fetching streaks', data);
+      setStreaks(data);
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        console.log('Unauthorized access. Clearing streaks.');
+        setStreaks([]);
+      } else {
+        console.error('Error fetching streaks:', error);
+      }
+    }
+  };
 
   const handleSave = (selectedMonth, selectedYear) => {
     if (selectedMonth === month && selectedYear === year) {
@@ -70,9 +80,13 @@ export const Activity = () => {
     setYear(currentYear);
   }
 
+  const activityStreakFound = streaks.find(s => s.exercise_id === parseInt(activityId, 10)) || { exercise_id: activityId, streak_number: 0, last_updated: null };
+  const activityStreak = activityStreakFound.streak_number || 0;
+  console.log(activityStreak);
+
   useEffect(() => {
     fetchExerciseLog();
-    fetchStreak();
+    fetchStreaks();
   }, [month, year, showAddModal])
 
   return (
@@ -81,10 +95,17 @@ export const Activity = () => {
         <Header level="h1" color="primaryText">{activityname}</Header>
         {/* <Text size='large' color='secondaryText'>Top Player: Cal Ochoa</Text> */}
         <div className='mt-4 space-x-4'>
-          <div className='text-primaryText border border-secondaryMenu inline-flex items-center px-3 py-1 rounded-md font-semibold'>
-            <FaFire />
-            0
-          </div>
+          <PopupDialog
+            trigger={
+              <div className={` ${isAuthenticated() ? 'text-[#E53981]' : 'text-mutedText'} border border-secondaryMenu inline-flex items-center px-3 py-1 rounded-md font-semibold space-x-1`}>
+              <FaFire />
+              <span>{activityStreak}</span>
+              </div>
+            }
+            content={isAuthenticated() ? <p>Your Current Streak.</p> : <p>Please login to view your streak.</p>}
+            onHover={true}  // Change to false if you want to toggle with click
+            position="bottom"  // Options: 'top', 'bottom', 'left', 'right'
+          />
           {/* <div className='text-primaryText border border-secondaryMenu inline-flex items-center px-3 py-1 rounded-md font-semibold'>
             <FaFire />
             0
@@ -92,7 +113,7 @@ export const Activity = () => {
         </div>
       </div>
 
-      <div className='bg-neutral-800 rounded-t-3xl h-[100vh] p-8 text-gray-400'>
+      <div className='bg-secondaryMenu rounded-t-3xl h-[100vh] p-8 text-gray-400'>
         <div className='flex justify-between items-end'>
           <Text size='large' color='mutedText'>{months.find(m => m.value === month)?.name} {year}</Text>
           <div className='flex gap-2'>
