@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#1E88E5',      
+        primary: '#1E88E5',
+        secondary: '#C70039', 
         primaryHover: '#1565C0', 
         disabledButtonBg: '#555555',     
         textPrimaryButton: '#FFFFFF', 
@@ -28,6 +29,9 @@ export default {
         h3: ['1.5rem', { lineHeight: '2rem' }], // 24px
         h4: ['1.25rem', { lineHeight: '1.75rem' }], // 20px
         h5: ['1rem', { lineHeight: '1.5rem' }], // 16px
+      },
+      animation: {
+        'spin-slow': 'spin 10s linear infinite',
       },
     },
   },

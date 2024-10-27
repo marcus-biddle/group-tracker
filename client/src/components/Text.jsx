@@ -1,7 +1,7 @@
 // Text.jsx
 import React from 'react';
 
-const Text = ({ size = 'medium', color = 'primaryText', children }) => {
+const Text = ({ size = 'medium', color = 'primaryText', className='', children }) => {
   // Base color styles
   const colorStyles = {
     primaryText: 'text-primaryText',
@@ -17,7 +17,7 @@ const Text = ({ size = 'medium', color = 'primaryText', children }) => {
   };
 
   return (
-    <p className={`${colorStyles[color]} ${sizeStyles[size]} font-mono`}>
+    <p className={`${colorStyles[color]} ${sizeStyles[size]} ${className} font-mono`}>
       {children}
     </p>
   );
