@@ -15,7 +15,7 @@ const PopupDialog = ({ trigger, content, onHover = false, position = 'top' }) =>
   const positionStyles = {
     top: 'bottom-full mb-2',
     bottom: 'top-full mt-2 min-w-[150px]',
-    left: 'right-full mr-2',
+    left: 'right-0 mt-2 min-w-[150px]',
     right: 'left-full ml-2',
   };
 

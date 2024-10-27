@@ -103,8 +103,8 @@ export const Activity = () => {
               </div>
             }
             content={isAuthenticated() ? <p>Your Current Streak.</p> : <p>Please login to view your streak.</p>}
-            onHover={true}  // Change to false if you want to toggle with click
-            position="bottom"  // Options: 'top', 'bottom', 'left', 'right'
+            onHover={true} 
+            position="bottom"  
           />
           {/* <div className='text-primaryText border border-secondaryMenu inline-flex items-center px-3 py-1 rounded-md font-semibold'>
             <FaFire />
@@ -120,11 +120,17 @@ export const Activity = () => {
             <Button size='medium' onClick={() => setShowFilterModal(true)}>
               <TfiFilter className='w-full h-full ' />
             </Button>
-            {
-              <Button size='medium' onClick={() => setShowAddModal(true)}>
+
+            <PopupDialog
+            trigger={
+              <Button size='medium' onClick={() => setShowAddModal(true)} disabled={!isAuthenticated()}>
                 <TfiBolt className=' w-6 h-6'/>
               </Button>
             }
+            content={isAuthenticated() ? '' : <p>Please login to update your count.</p>}
+            onHover={true} 
+            position="left"  
+          />
           </div>
         </div>
 

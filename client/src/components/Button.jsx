@@ -3,8 +3,8 @@ import React from 'react';
 
 const Button = ({ size = 'medium', disabled = false, children, onClick }) => {
   // Base styles
-  const baseStyles = `text-textPrimaryButton bg-primary hover:bg-primaryHover rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryHover transition duration-300 ease-in-out ${
-    disabled ? 'bg-disabledButtonBg cursor-not-allowed' : 'cursor-pointer'
+  const baseStyles = ` rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primaryHover transition duration-300 ease-in-out ${
+    disabled ? 'bg-disabledButtonBg cursor-not-allowed' : 'text-textPrimaryButton bg-primary hover:bg-primaryHover cursor-pointer'
   }`;
 
   // Size-based styles
