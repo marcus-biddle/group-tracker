@@ -69,7 +69,6 @@ export const Activity = () => {
               <TfiFilter className='w-full h-full ' />
             </Button>
             {
-              isAuthenticated() &&
               <Button size='medium' onClick={() => setShowAddModal(true)}>
                 <TfiBolt className=' w-6 h-6'/>
               </Button>
