@@ -62,7 +62,7 @@ export const Activity = () => {
       </div>
 
       <div className='bg-neutral-800 rounded-t-3xl h-[100vh] p-8 text-gray-400'>
-        <div className='flex justify-between items-center'>
+        <div className='flex justify-between items-end'>
           <Text size='large' color='mutedText'>{months.find(m => m.value === month)?.name} {year}</Text>
           <div className='flex gap-2'>
             <Button size='medium' onClick={() => setShowFilterModal(true)}>
