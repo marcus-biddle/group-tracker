@@ -4,6 +4,7 @@ import Header from './Header';
 import Text from './Text';
 import { useParams } from 'react-router';
 import { logExercise } from '../api/exerciseApi';
+import { updateStreak } from '../api/streakApi';
 
 export const AddModal = ({ showModal, setShowModal }) => {
     if (!showModal) return null; // Return null if modal is not shown
@@ -29,6 +30,10 @@ export const AddModal = ({ showModal, setShowModal }) => {
         exercise_count: numberValue, 
         date: isToday ? new Date().toISOString().split('T')[0] : selectedDate, 
         exercise_id: activityId
+      })
+
+      await updateStreak({
+        exerciseId: activityId
       })
   
       setNumberValue('');

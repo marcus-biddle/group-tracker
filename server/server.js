@@ -241,7 +241,6 @@ app.post('/api/streak/update', authenticateToken, async (req, res) => {
       const lastUpdatedDate = new Date(last_updated).toISOString().split('T')[0];
       const yesterdayDate = yesterday.toISOString().split('T')[0];
 
-      console.log('about to do if/else', lastUpdatedDate === yesterdayDate, lastUpdatedDate === currentDateDate, lastUpdatedDate, yesterdayDate, currentDateDate)
       // Check if last_updated was yesterday
       if (lastUpdatedDate === yesterdayDate) {
           // Update streak and last_updated
@@ -279,7 +278,7 @@ app.post('/api/streak/update', authenticateToken, async (req, res) => {
     }
   } catch (err) {
       console.error(err);
-      res.status(500).json({ message: 'Error updating exercise log' });
+      res.status(500).json({ message: 'Error updating streak' });
   }
 })
 
