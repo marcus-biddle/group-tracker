@@ -18,7 +18,7 @@ export const TopNav = () => {
   return (
     <div className=' flex items-center justify-between p-6 z-50 text-[#B3B3B3]'>
       <button className='bg-transparent p-0 focus:outline-none' onClick={goHome}>
-        <h2 className='text-lg font-mono '>GroupTracker.io</h2>
+        <h2 className='text-lg uppercase font-thin tracking-widest'>GroupTracker</h2>
       </button>
         
       <Button size='medium' onClick={() => setIsOpen(!isOpen)}>

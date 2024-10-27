@@ -17,7 +17,7 @@ const Text = ({ size = 'medium', color = 'primaryText', className='', children }
   };
 
   return (
-    <p className={`${colorStyles[color]} ${sizeStyles[size]} ${className} font-mono`}>
+    <p className={`${colorStyles[color]} ${sizeStyles[size]} ${className}`}>
       {children}
     </p>
   );
