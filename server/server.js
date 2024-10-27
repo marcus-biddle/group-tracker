@@ -47,10 +47,11 @@ export const authenticateToken = (req, res, next) => {
   }
 
   try {
-      // Verify the token using your secret
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decoded; // Attach the decoded token payload (e.g., user_id) to req.user
-      next(); // Proceed to the next middleware or route handler
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) return res.sendStatus(403); // Forbidden
+      req.user = user; // Attach user to request
+      next();
+    });
   } catch (err) {
       return res.status(403).json({ message: 'Invalid token, authorization denied.' });
   }
@@ -160,7 +161,6 @@ app.post('/api/exercises/log', async (req, res) => {
 // Update a user's log
 app.post('/api/exercises/log/insert', authenticateToken, async (req, res) => {
   const { user_id, exercise_count, date, exercise_id } = req.body;
-  console.log({ user_id, exercise_count, date, exercise_id })
 
   try {
       // Build the SQL update query
@@ -198,6 +198,104 @@ app.get('/api/players', async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'No players found.' });
+    }
+
+    res.status(200).json(result.rows);
+  } catch (error) {
+    console.error('Error fetching players:', error);
+    res.status(500).json({ message: 'Internal server error.' });
+  }
+});
+
+app.post('/api/streak/update', authenticateToken, async (req, res) => {
+  const { exercise_id } = req.body;
+  const user_id = req.user.userId; // Assuming the user ID is available in the request after authentication
+
+  if (!exercise_id || !user_id) {
+      return res.status(400).json({ error: 'Exercise ID AND user ID is required' });
+  }
+
+  try {
+    // Check if a record exists for the given exercise_id
+    const existingRecordQuery = `
+      SELECT streak_number, last_updated 
+      FROM public.streak
+      WHERE user_id = $1 AND exercise_id = $2
+    `;
+    const existingRecordParams = [user_id, exercise_id];
+    const existingRecordResult = await pool.query(existingRecordQuery, existingRecordParams);
+    console.log(existingRecordResult.rows[0]);
+    // return res.status(200).json(existingRecordResult.rows[0]);
+
+    if (existingRecordResult.rows.length > 0) {
+      // Record exists, update the streak
+      const { streak_number, last_updated } = existingRecordResult.rows[0];
+      const currentDate = new Date();
+    
+      // Use PostgreSQL's date comparison with "AT TIME ZONE"
+      const yesterday = new Date();
+      yesterday.setDate(currentDate.getDate() - 1);
+      
+      // Format dates as UTC for comparison
+      const currentDateDate = currentDate.toISOString().split('T')[0];
+      const lastUpdatedDate = new Date(last_updated).toISOString().split('T')[0];
+      const yesterdayDate = yesterday.toISOString().split('T')[0];
+
+      console.log('about to do if/else', lastUpdatedDate === yesterdayDate, lastUpdatedDate === currentDateDate, lastUpdatedDate, yesterdayDate, currentDateDate)
+      // Check if last_updated was yesterday
+      if (lastUpdatedDate === yesterdayDate) {
+          // Update streak and last_updated
+          const updatedStreak = streak_number + 1;
+          const updateQuery = `
+              UPDATE public.streak
+              SET streak_number = $1, last_updated = $2 
+              WHERE user_id = $3 AND exercise_id = $4
+          `;
+          const updateParams = [updatedStreak, new Date(), user_id, exercise_id];
+          await pool.query(updateQuery, updateParams);
+          return res.status(200).json({ message: 'Streak updated successfully', streak_number: updatedStreak });
+      } else if (lastUpdatedDate === currentDateDate) {
+        return res.status(200).json({ message: 'Streak already updated.'});
+      } else {
+        // Last update is not yesterday, reset the streak to 1
+        const resetQuery = `
+          UPDATE public.streak
+          SET streak_number = 1, last_updated = $1 
+          WHERE user_id = $2 AND exercise_id = $3
+        `;
+        const resetParams = [new Date(), user_id, exercise_id];
+        await pool.query(resetQuery, resetParams);
+        return res.status(200).json({ message: 'Streak reset to 1', streak_number: 1 });
+      }
+    } else {
+      // Last update is not yesterday, reset the streak to 1
+      const resetQuery = `
+        INSERT INTO public.streak (user_id, exercise_id)
+        VALUES ($1, $2)
+      `;
+      const resetParams = [user_id, exercise_id];
+      await pool.query(resetQuery, resetParams);
+      return res.status(200).json({ message: 'Streak reset to 1', streak_number: 1 });
+    }
+  } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error updating exercise log' });
+  }
+})
+
+app.get('/api/streak/player', authenticateToken, async (req, res) => {
+  const user_id = req.user.userId;
+
+  try {
+    const query = `
+      SELECT streak_number, exercise_id FROM public.streak WHERE user_id = $1;
+    `;
+
+    const updateParams = [user_id];
+    const result = await pool.query(query, updateParams);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No streak found.' });
     }
 
     res.status(200).json(result.rows);
