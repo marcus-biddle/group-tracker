@@ -19,7 +19,7 @@ export const IntroList = ({ exerciseList }) => {
                             <button 
                             className="mt-4 w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-primaryHover transition-colors duration-200 ease-in-out"
                             >
-                                Explore Activity
+                                Track Progress
                             </button>
                         </NavLink>
                     </div>
