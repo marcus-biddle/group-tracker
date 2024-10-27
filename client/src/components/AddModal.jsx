@@ -33,7 +33,7 @@ export const AddModal = ({ showModal, setShowModal }) => {
       })
 
       await updateStreak({
-        exerciseId: activityId
+        exercise_id: activityId
       })
   
       setNumberValue('');

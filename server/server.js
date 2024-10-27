@@ -278,7 +278,7 @@ app.post('/api/streak/update', authenticateToken, async (req, res) => {
     }
   } catch (err) {
       console.error(err);
-      res.status(500).json({ message: 'Error updating streak' });
+      res.status(500).json({ message: 'Error updating streak', err: err });
   }
 })
 
