@@ -26,17 +26,6 @@ export const IntroList = ({ exerciseList }) => {
                 </li>
             ))}
         </ul>
-        <div className="relative max-w-sm mx-auto bg-secondaryMenu rounded-lg p-1 overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-primary via-secondary to-primary animate-spin-slow"></div>
-            <div className="relative bg-secondaryMenu capitalize font-mono  rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-shadow duration-300 ease-in-out">
-                <Text size='large' color='primaryText'>test</Text>
-                <button 
-                className="mt-4 w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-primaryHover transition-colors duration-200 ease-in-out"
-                >
-                    Explore Activity
-                </button>
-            </div>
-        </div>
     </div>
   )
 }
