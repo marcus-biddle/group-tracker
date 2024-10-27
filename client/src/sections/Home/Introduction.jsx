@@ -10,7 +10,7 @@ export const Introduction = ({ activityCount, playerCount }) => {
             <strong className=' font-mono font-extrabold text-[#FFFFFF]'> {activityCount}</strong> activities.
         </Text>
         <div className='py-6'>
-          <Header level="h1" color="primaryText">Ready to compete?</Header>
+          <Header level="h1" color="primaryText">Create <span className='text-primary'>Move</span>ment</Header>
         </div>
     </div>
   )
