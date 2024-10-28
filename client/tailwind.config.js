@@ -32,6 +32,13 @@ export default {
       },
       animation: {
         'spin-slow': 'spin 10s linear infinite',
+        toTop: 'toTop 1s forwards',
+      },
+      keyframes: {
+        toTop: {
+          '0%': { transform: 'translateY(100%)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
       },
     },
   },

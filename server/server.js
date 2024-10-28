@@ -127,35 +127,35 @@ app.get('/api/exercises', async (req, res) => {
 
 // Route to Get exercise log of specific exercise
 app.post('/api/exercises/log', async (req, res) => {
-  const { exerciseId, month, year } = req.body;
+  const { exercise_id, month, year, day } = req.body;
+  console.log('Parameters:', { exercise_id, month, year, day });
+  try {
+    const query = `
+      SELECT 
+          u.id AS user_id,
+          CONCAT(u.firstname, ' ', u.lastname) AS fullname,
+          SUM(el.exercise_count) AS total_exercise_count
+      FROM 
+          public.exercise_log el
+      JOIN 
+          public.users u
+          ON el.user_id = u.id
+      WHERE 
+          el.exercise_id = $1
+          AND EXTRACT(MONTH FROM el.date) = $2   
+          AND EXTRACT(YEAR FROM el.date) = $3 
+          AND ($4 = -1 OR EXTRACT(DAY FROM el.date) = $4)  
+      GROUP BY 
+          u.id, u.firstname, u.lastname;
+    `;
 
-    try {
-        // Base query without optional filters
-        let query = `
-        SELECT 
-            u.id AS user_id,
-            CONCAT(u.firstname, ' ', u.lastname) AS fullname,
-            SUM(el.exercise_count) AS total_exercise_count
-        FROM 
-            public.exercise_log el
-        JOIN 
-            public.users u
-            ON el.user_id = u.id
-        WHERE 
-            el.exercise_id = $1
-            AND EXTRACT(MONTH FROM el.date) = $2   
-            AND EXTRACT(YEAR FROM el.date) = $3    
-        GROUP BY 
-            u.id, u.firstname, u.lastname;
-        `
-
-        // Execute the query
-        const result = await pool.query(query, [exerciseId, month, year]);
-        res.status(200).json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: 'Failed to retrieve exercises' });
-    }
+    // Execute the query
+    const result = await pool.query(query, [exercise_id, month, year, day]);
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to retrieve exercises' });
+  }
 });
 
 // Update a user's log
