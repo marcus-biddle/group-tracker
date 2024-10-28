@@ -79,12 +79,13 @@ export const Activity = () => {
   const handleUpdatingTable = async (chosenDate) => {
     console.log(chosenDate);
     setDate(chosenDate);
-    await retrieveExerciseLog({
+    const data = await retrieveExerciseLog({
       exercise_id: activityId,
       month: chosenDate.month+1,
       year: chosenDate.year,
       day: chosenDate.day
     })
+    setExerciseLog(data);
     setShowCalendar(false);
   }
 

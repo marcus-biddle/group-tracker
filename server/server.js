@@ -147,6 +147,8 @@ app.post('/api/exercises/log', async (req, res) => {
           AND ($4 = -1 OR EXTRACT(DAY FROM el.date) = $4)  
       GROUP BY 
           u.id, u.firstname, u.lastname;
+      ORDER BY 
+        total_exercise_count DESC;
     `;
 
     // Execute the query
