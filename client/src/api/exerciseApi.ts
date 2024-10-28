@@ -30,9 +30,9 @@ export const retrieveExercises = async () => {
 };
 
 export const retrieveExerciseLog = async (exerciseFilters: ExerciseLogData) => {
+  console.log('API',exerciseFilters)
     try {
       const response = await axiosInstance.post('/exercises/log', exerciseFilters);
-      console.log(exerciseFilters, response)
       return response.data;
     } catch (error) {
       throw new Error(error.response?.data?.message || 'Could not retrieve exercises.');

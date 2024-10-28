@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './Calendar.css';
 import { months } from '../sections/Activity/Activity';
+import { retrieveExerciseLog } from '../api/exerciseApi';
 
-const Calendar = ({setShowCalendar, setDate, date}) => {
+const Calendar = ({date, handleUpdatingTable}) => {
   // Month and year state
   const [currentYear, setCurrentYear] = useState(date.year);
   const [currentMonth, setCurrentMonth] = useState(date.month);
@@ -95,15 +96,20 @@ const Calendar = ({setShowCalendar, setDate, date}) => {
       setCurrentYear(currentYear - 1);
   };
 
-  const handleUpdatingDate = () => {
-    console.log(currentDay, currentMonth, currentYear);
-    setDate({
-        day: selectDayMode ? currentDay : -1,
-        month: currentMonth,
-        year: currentYear
-    });
-    setShowCalendar(false);
-  }
+//   const handleUpdatingDate = () => {
+//     console.log(currentDay, currentMonth, currentYear);
+//     setDate({
+//         day: selectDayMode ? currentDay : -1,
+//         month: currentMonth,
+//         year: currentYear
+//     });
+//     console.log('handleUpdatingDate', date)
+
+//     handleUpdatingTable();
+//     setShowCalendar(false);
+//   }
+
+  
 
   return (
     <div className={`calendar dark`}>
@@ -140,7 +146,14 @@ const Calendar = ({setShowCalendar, setDate, date}) => {
             </div>
         </div>
         <div>
-            <button onClick={handleUpdatingDate} className=' bg-primary'>Update Table</button>
+            <button onClick={() => handleUpdatingTable({
+                    day: selectDayMode ? currentDay : -1,
+                    month: currentMonth,
+                    year: currentYear
+                })} 
+                className=' bg-primary'>
+                Update Table
+            </button>
         </div>
         
       </div>

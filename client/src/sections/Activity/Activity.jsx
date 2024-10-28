@@ -29,9 +29,6 @@ export const months = [
   { name: 'December', value: 11 },
 ];
 
-const currentMonth = new Date().getMonth() + 1;
-const currentYear = new Date().getFullYear();
-
 export const Activity = () => {
   const { activityId, activityname } = useParams();
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -54,7 +51,12 @@ export const Activity = () => {
   // console.log(month, year)
 
   const fetchExerciseLog = async () => {
-    const data = await retrieveExerciseLog({ exerciseId: activityId, month: date.month+1, year: date.year, day: date.day });
+    const data = await retrieveExerciseLog({ 
+      exercise_id: activityId, 
+      month: date.month+1, 
+      year: date.year, 
+      day: date.day 
+    });
     console.log('fetching log: ', data);
     setExerciseLog(data);
   }
@@ -74,6 +76,18 @@ export const Activity = () => {
     }
   };
 
+  const handleUpdatingTable = async (chosenDate) => {
+    console.log(chosenDate);
+    setDate(chosenDate);
+    await retrieveExerciseLog({
+      exercise_id: activityId,
+      month: chosenDate.month+1,
+      year: chosenDate.year,
+      day: chosenDate.day
+    })
+    setShowCalendar(false);
+  }
+
   // const handleSave = (selectedMonth, selectedYear) => {
   //   if (selectedMonth === month && selectedYear === year) {
   //     setShowFilterModal(false);
@@ -91,14 +105,12 @@ export const Activity = () => {
 
   const activityStreakFound = streaks.find(s => s.exercise_id === parseInt(activityId, 10)) || { exercise_id: activityId, streak_number: 0, last_updated: null };
   const activityStreak = activityStreakFound.streak_number || 0;
-  console.log(activityStreak);
 
   useEffect(() => {
     fetchExerciseLog();
     fetchStreaks();
-  }, [date, showAddModal])
+  }, [])
 
-  console.log('activity date', date);
   return (
     <div className=' relative min-h-[100vh]'>
       <div className=' p-6 '>
@@ -178,7 +190,7 @@ export const Activity = () => {
       <FilterModal showModal={showFilterModal} setShowModal={setShowFilterModal} onSave={{}} />
       <AddModal showModal={showAddModal} setShowModal={setShowAddModal} />
       {showCalendar && <div className=' absolute top-[20%] w-full px-6'>
-        <Calendar setShowCalendar={setShowCalendar} setDate={setDate} date={date} />
+        <Calendar setShowCalendar={setShowCalendar} setDate={setDate} date={date} handleUpdatingTable={handleUpdatingTable} />
       </div>}
     </div>
   )
