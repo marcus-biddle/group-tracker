@@ -323,7 +323,7 @@ export const Activity = () => {
       {showCalendar && <div className=' absolute top-0 h-screen flex justify-center items-center w-full px-6 bg-black bg-opacity-50'>
         <Calendar setShowCalendar={setShowCalendar} setDate={setDate} date={date} handleUpdatingTable={handleUpdatingTable} />
       </div>}
-      <UserSelectModal isOpen={userSelectModal} onClose={() => setUserSelectModal(false)} users={exerciseLog} onSelectUser={(user) => setActiveFilters({
+      <UserSelectModal isOpen={userSelectModal} onClose={() => setUserSelectModal(false)} users={userList} onSelectUser={(user) => setActiveFilters({
         user: user,
         date: date
       })} />
