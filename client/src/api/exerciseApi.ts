@@ -30,7 +30,6 @@ export const retrieveExercises = async () => {
 };
 
 export const retrieveExerciseLog = async (exerciseFilters: ExerciseLogData) => {
-  console.log('API',exerciseFilters)
     try {
       const response = await axiosInstance.post('/exercises/log', exerciseFilters);
       return response.data;
@@ -38,6 +37,15 @@ export const retrieveExerciseLog = async (exerciseFilters: ExerciseLogData) => {
       throw new Error(error.response?.data?.message || 'Could not retrieve exercises.');
     }
   };
+
+  export const retrieveExerciseLogByUser = async (exerciseFilters: ExerciseLogData) => {
+      try {
+        const response = await axiosInstance.post('/exercises/log/user', exerciseFilters);
+        return response.data;
+      } catch (error) {
+        throw new Error(error.response?.data?.message || 'Could not retrieve exercises for user.');
+      }
+    };
 
 export const logExercise = async (exerciseData: ExerciseLogData) => {
   try {

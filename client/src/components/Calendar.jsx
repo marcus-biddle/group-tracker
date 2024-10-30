@@ -140,7 +140,7 @@ const Calendar = ({date, handleUpdatingTable}) => {
       <div className='space-x-16'>
         <div className="calendar-footer">
             <div className={`toggle ${selectDayMode ? 'on' : 'off'}`}>
-            <span>Show Days</span>
+            <span>Use Days</span>
             <div className="dark-mode-switch" onClick={toggleSelectDayMode}>
                 <div className={`dark-mode-switch-ident ${selectDayMode ? 'dark' : 'light'}`}></div>
             </div>
@@ -151,8 +151,8 @@ const Calendar = ({date, handleUpdatingTable}) => {
                     month: currentMonth,
                     year: currentYear
                 })} 
-                className=' bg-primary'>
-                Update Table
+                className='bg-transparent border border-[#00B2CC] text-[#00B2CC] font-semibold'>
+                Update
             </button>
         </div>
         

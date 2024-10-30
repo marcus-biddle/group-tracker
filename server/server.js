@@ -160,6 +160,42 @@ app.post('/api/exercises/log', async (req, res) => {
   }
 });
 
+app.post('/api/exercises/log/user', async (req, res) => {
+  const { exercise_id, month, year, day, user_id } = req.body;
+  console.log('Parameters:', { exercise_id, month, year, day, user_id });
+  try {
+    const query = `
+      SELECT 
+          el.id AS log_id,
+          u.id AS user_id,
+          CONCAT(u.firstname, ' ', u.lastname) AS fullname,
+          el.exercise_count,
+          el.date
+      FROM 
+          public.exercise_log el
+      JOIN 
+          public.users u
+          ON el.user_id = u.id
+      WHERE 
+          el.exercise_id = $1
+          AND EXTRACT(MONTH FROM el.date) = $2   
+          AND EXTRACT(YEAR FROM el.date) = $3 
+          AND ($4 = -1 OR EXTRACT(DAY FROM el.date) = $4)
+          AND (u.id = $5)
+      ORDER BY 
+        el.date DESC;
+    `;
+
+    // Execute the query
+    const result = await pool.query(query, [exercise_id, month, year, day, user_id]);
+    res.status(200).json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to retrieve exercises' });
+  }
+});
+
+
 // Update a user's log
 app.post('/api/exercises/log/insert', authenticateToken, async (req, res) => {
   const { user_id, exercise_count, date, exercise_id } = req.body;
