@@ -9,6 +9,8 @@ import './index.css'
 import { Activity } from './sections/Activity/Activity.jsx';
 import { Home } from './sections/Home/Home.jsx';
 import { AuthForm } from './sections/Auth/AuthForm.jsx';
+import LoginPage from './sections/Auth/LoginPage.jsx';
+import ActivityPage from './sections/Activity/ActivityPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -24,8 +26,16 @@ const router = createBrowserRouter([
         element: <Activity />
       },
       {
+        path: "activities/v2/:activityId/:activityname",
+        element: <ActivityPage />
+      },
+      {
         path: "/auth",
         element: <AuthForm />
+      },
+      {
+        path: "/login",
+        element: <LoginPage/>
       },
     ]
   },

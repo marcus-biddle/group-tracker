@@ -24,7 +24,7 @@ function App() {
   // console.log(matches[0].params.activityId);
 
   return (
-    <div className={`bg-[#121212] min-h-screen`}>
+    <div className={` min-h-screen bg-gradient-to-br from-black via-[#1C1422] to-[#2f2239]`}>
       <TopNav />
       <div className=''>
         <Outlet />

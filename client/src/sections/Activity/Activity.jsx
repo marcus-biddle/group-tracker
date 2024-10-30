@@ -114,8 +114,8 @@ export const Activity = () => {
 
   return (
     <div className=' relative min-h-[100vh]'>
-      <div className=' p-6 '>
-        <Header level="h1" color="primaryText">{activityname}</Header>
+      <section className=' p-6 '>
+        <h1 className='text-5xl font-semibold text-[#C1BECC] capitalize'>{activityname}</h1>
         {/* <Text size='large' color='secondaryText'>Top Player: Cal Ochoa</Text> */}
         <div className='mt-4 space-x-4'>
           <PopupDialog
@@ -135,9 +135,9 @@ export const Activity = () => {
           </div> */}
           
         </div>
-      </div>
+      </section>
 
-      <div className='bg-secondaryMenu rounded-t-3xl h-[100vh] p-8 text-gray-400'>
+      <div className=' p-4'>
         <div className='flex justify-between items-end'>
           <Text size='large' color='mutedText'>{months.find(m => m.value === date.month)?.name}{`${date.day !== -1 ? ` ${date.day},` : ''}`} {date.year}</Text>
           <div className='flex gap-2'>
@@ -163,29 +163,41 @@ export const Activity = () => {
           </div>
         </div>
 
+        <div>
+
+        </div>
+
         {/* <div className=' flex justify-end mt-2'>
           {isFilterOn && <button onClick={resetFilter} className='underline underline-offset-2 text-sm text-primary p-0 bg-transparent'>Reset</button>}
         </div> */}
         
-        <div className="flex justify-center">
-          <table className="min-w-full table-auto rounded-lg border-collapse  mt-6">
-            <thead className=''>
-              <tr className="">
-                <th className=" rounded-md px-4 py-2">Rank</th>
-                <th className=" rounded-md px-4 py-2">Name</th>
-                <th className="rounded-md px-4 py-2">Count</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exerciseLog.map((person, index) => (
-                <tr key={index} className="hover:bg-primary border-b-2 border-b-primary rounded-md text-primaryText">
-                  <td className="p-4 text-center text-lg w-1/6">{index + 1}</td>
-                  <td className="p-4 text-center text-lg w-1/2 font-semibold">{person.fullname}</td>
-                  <td className="p-4 text-center text-lg w-1/3">{person.total_exercise_count}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="flex justify-center relative bg-[#291B34] rounded-md shadow-lg overflow-hidden">
+          <div>
+            <div onClick={() => setActiveButton('')} className='absolute px-2 pb-1 top-2 right-4 border border-[#00B2CC] text-[#00B2CC] font-semibold rounded-md text-2xl flex justify-center items-center'>
+                &times;
+            </div>
+            <div className='mx-4 mt-14 mb-6 rounded-md p-8 bg-[#120D18] shadow-md'>
+              <table className="min-w-full table-auto rounded-lg border-collapse  mt-6">
+                <thead className=''>
+                  <tr className="">
+                    <th className=" rounded-md px-4 py-2 w-[10%]">Rank</th>
+                    <th className=" rounded-md px-4 py-2 w-[80%]">Name</th>
+                    <th className="rounded-md px-4 py-2 w-[10%]">Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {exerciseLog.map((person, index) => (
+                    <tr key={index} className="hover:bg-primary border-b-2 border-b-primary rounded-md text-primaryText">
+                      <td className="p-4 text-center text-lg">{index + 1}</td>
+                      <td className="p-4 text-center text-lgfont-semibold">{person.fullname}</td>
+                      <td className="p-4 text-center text-lg">{person.total_exercise_count}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          
         </div>
       </div>
       <FilterModal showModal={showFilterModal} setShowModal={setShowFilterModal} onSave={{}} />

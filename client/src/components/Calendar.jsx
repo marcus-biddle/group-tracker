@@ -140,7 +140,7 @@ const Calendar = ({date, handleUpdatingTable}) => {
       <div className='space-x-16'>
         <div className="calendar-footer">
             <div className={`toggle ${selectDayMode ? 'on' : 'off'}`}>
-            <span>Deep Mode</span>
+            <span>Show Days</span>
             <div className="dark-mode-switch" onClick={toggleSelectDayMode}>
                 <div className={`dark-mode-switch-ident ${selectDayMode ? 'dark' : 'light'}`}></div>
             </div>

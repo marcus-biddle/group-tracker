@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../helpers/authHelper';
 import Button from '../components/Button';
 import Header from '../components/Header';
+import { GiEcology } from "react-icons/gi";
 
 export const TopNav = () => {
   const [ isOpen, setIsOpen ] = useState(false);
@@ -16,19 +17,28 @@ export const TopNav = () => {
   };
 
   return (
-    <div className=' flex items-center justify-between p-6 z-50 text-[#B3B3B3]'>
-      <button className='bg-transparent p-0 focus:outline-none' onClick={goHome}>
-        <h2 className='text-lg uppercase font-thin tracking-widest'>GroupTracker</h2>
+    <div className=' flex items-center justify-between py-6 px-8 z-50 text-[#B3B3B3]'>
+      <div className=' flex justify-center items-center'>
+        <div className='bg-transparent w-10' onClick={goHome}>
+          <GiEcology className='w-full h-full text-[#00B2CC]' />
+        </div>
+        {/* Add user name here */}
+        {isAuthenticated() && <span className='font-semibold px-4'>Marcus</span>}
+      </div>
+      
+
+      <button className=' border-[#00B2CC] bg-transparent border-2'>
+        <TfiMenu className=' w-full h-full text-[#00B2CC]' />
       </button>
         
-      <Button size='medium' onClick={() => setIsOpen(!isOpen)}>
+      {/* <Button size='medium' onClick={() => setIsOpen(!isOpen)}>
         {
           !isOpen ?
           <TfiMenu className=' w-full h-full' /> :
           <TfiClose className=' w-full h-full' />
         }
         
-      </Button>
+      </Button> */}
 
       {/* Menu */}
       <div

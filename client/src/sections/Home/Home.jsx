@@ -3,6 +3,7 @@ import { Introduction } from './Introduction'
 import { IntroList } from './IntroList'
 import { retrieveExercises } from '../../api/exerciseApi';
 import { retrievePlayers } from '../../api/playersApi';
+import Banner from '../../components/Banner';
 
 export const Home = () => {
   const [ exerciseList, setExerciseList ] = useState([]);
@@ -35,6 +36,7 @@ export const Home = () => {
 
   return (
     <div className=''>
+      {/* <Banner /> */}
         <Introduction activityCount={exerciseList.length} playerCount={playerList.length} />
         <IntroList exerciseList={exerciseList} />
     </div>
