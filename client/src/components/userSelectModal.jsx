@@ -38,7 +38,7 @@ const UserSelectModal = ({ isOpen, onClose, users, onSelectUser }) => {
             {filteredUsers.length > 0 && searchTerm !== '' ? (
               filteredUsers.map(user => (
                 <button
-                  key={user.user_id}
+                  key={user.id}
                   onClick={() => {
                     onSelectUser(user);
                     onClose();
