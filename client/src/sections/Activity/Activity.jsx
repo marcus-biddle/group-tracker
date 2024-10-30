@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router'
 import { TfiBolt, TfiFilter } from "react-icons/tfi";
 import { FilterModal } from '../../components/FilterModal';
 import { AddModal } from '../../components/AddModal';
-import { retrieveExerciseLog } from '../../api/exerciseApi';
+import { retrieveExerciseLog, retrieveExerciseLogByUser } from '../../api/exerciseApi';
 import { isAuthenticated } from '../../helpers/authHelper';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
@@ -18,6 +18,8 @@ import { MdAdd } from "react-icons/md";
 import { GoPersonAdd, GoPlus, GoCalendar, GoGraph } from "react-icons/go";
 import UserSelectModal from '../../components/userSelectModal';
 import { FaTimes } from 'react-icons/fa';
+import { formatDate } from '../../helpers/format';
+import { retrieveUsers } from '../../api/playersApi';
 
 export const months = [
   { name: 'January', value: 0 },
@@ -44,6 +46,7 @@ export const Activity = () => {
   const [ streaks, setStreaks ] = useState([]);
 
   const [ userSelectModal, setUserSelectModal ] = useState(false);
+  const [ userList, setUserList ] = useState([]);
   
 
   const [ showCalendar, setShowCalendar ] = useState(false);
@@ -64,6 +67,12 @@ export const Activity = () => {
 
   // console.log(month, year)
 
+  const fetchUsers = async () => {
+    const data = await retrieveUsers();
+    console.log('userlist',data);
+    setUserList(data);
+  }
+
   const fetchExerciseLog = async () => {
     if (activeFilters.user !== null) {
       const data = await retrieveExerciseLogByUser({
@@ -74,6 +83,8 @@ export const Activity = () => {
         day: date.day 
       })
       console.log('fetching user logs', data)
+      setExerciseLog(data);
+
     } else {
       const data = await retrieveExerciseLog({ 
         exercise_id: activityId, 
@@ -104,15 +115,34 @@ export const Activity = () => {
 
   // For Calendar
   const handleUpdatingTable = async (chosenDate) => {
-    console.log(chosenDate);
+    console.log('button clicked')
+    // if (activeFilters.user !== null) {
+    //   const data = await retrieveExerciseLogByUser({
+    //     exercise_id: activityId,
+    //     user_id: activeFilters.user.user_Id,
+    //     month: chosenDate.month+1,
+    //     year: chosenDate.year,
+    //     day: chosenDate.day
+    //   })
+    //   console.log('A', data);
+    //   setExerciseLog(data);
+
+    // } else {
+    //   const data = await retrieveExerciseLog({
+    //     exercise_id: activityId,
+    //     month: chosenDate.month+1,
+    //     year: chosenDate.year,
+    //     day: chosenDate.day
+    //   });
+    //   console.log('B', data);
+    //   setExerciseLog(data);
+    // }
+
     setDate(chosenDate);
-    const data = await retrieveExerciseLog({
-      exercise_id: activityId,
-      month: chosenDate.month+1,
-      year: chosenDate.year,
-      day: chosenDate.day
+    setActiveFilters({
+      user: activeFilters.user,
+      date: chosenDate
     })
-    setExerciseLog(data);
     setShowCalendar(false);
   }
 
@@ -134,10 +164,26 @@ export const Activity = () => {
   const activityStreakFound = streaks.find(s => s.exercise_id === parseInt(activityId, 10)) || { exercise_id: activityId, streak_number: 0, last_updated: null };
   const activityStreak = activityStreakFound.streak_number || 0;
 
+  const clearFilters = () => {
+    setDate({
+      day: -1,
+      month: new Date().getMonth(),
+      year: new Date().getFullYear()
+    });
+
+    setActiveFilters({
+      user: null,
+      date: date
+    });
+
+    fetchExerciseLog();
+  }
+
   useEffect(() => {
     fetchExerciseLog();
     fetchStreaks();
-  }, [])
+    fetchUsers();
+  }, [activeFilters])
 
   return (
     <div className=' relative min-h-[100vh]'>
@@ -212,10 +258,7 @@ export const Activity = () => {
         </div> */}
         {activeFilters.user !== null && <div className=' text-[#84818D] py-4 space-y-2'>
           <p>Active Filters</p>
-          <button onClick={() => setActiveFilters({
-            user: null,
-            date: date
-          })} className='flex gap-2 items-center bg-[#322a37] bg-opacity-75 font-thin bg-transparent'>
+          <button onClick={clearFilters} className='flex gap-2 items-center bg-[#322a37] bg-opacity-75 font-thin bg-transparent'>
             <FaTimes className='text-[#00B2CC]'/>
             <span>{activeFilters.user.fullname}</span>
           </button>
@@ -233,8 +276,8 @@ export const Activity = () => {
 
             <div className='w-full mb-6 rounded-md p-8 bg-[#120D18] shadow-md space-y-4'>
               <div className="flex justify-between bg-[#19121D] text-[#918E9D] rounded-md px-4 py-3">
-                <span>Rank</span>
-                <span>Name</span>
+                <span>{activeFilters.user === null ? 'Rank' : 'Date'}</span>
+                {activeFilters.user === null ? <span>Name</span> : null}
                 <span>Count</span>
               </div>
               <div className='space-y-4'>
@@ -246,9 +289,9 @@ export const Activity = () => {
                   transition={{ delay: index * 0.2 }}
                   className="flex justify-between bg-[#201726] text-[#918E9D] rounded-md px-4 py-3"
                   >
-                    <span>{index +1}</span>
-                    <span>{person.fullname}</span>
-                    <span>{person.total_exercise_count}</span>
+                    <span>{activeFilters.user === null ? index +1 : formatDate(person.date)}</span>
+                    {activeFilters.user === null ? <span>{person.fullname}</span> : null}
+                    <span>{activeFilters.user === null ? person.total_exercise_count : person.exercise_count}</span>
                   </motion.div>
                 ))}
               </div>

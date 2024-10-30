@@ -229,7 +229,7 @@ app.post('/api/exercises/log/insert', authenticateToken, async (req, res) => {
 app.get('/api/players', async (req, res) => {
   try {
     const query = `
-      SELECT firstname, lastname FROM public.users;
+      SELECT firstname, lastname, id FROM public.users;
     `;
 
     const result = await pool.query(query);

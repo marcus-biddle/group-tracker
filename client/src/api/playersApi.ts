@@ -1,6 +1,6 @@
 import axiosInstance from "./axiosInstance";
 
-export const retrievePlayers = async () => {
+export const retrieveUsers = async () => {
     try {
       const response = await axiosInstance.get('/players');
       return response.data;
