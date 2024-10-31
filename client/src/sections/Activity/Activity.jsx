@@ -4,7 +4,7 @@ import { TfiBolt, TfiFilter } from "react-icons/tfi";
 import { FilterModal } from '../../components/FilterModal';
 import { AddModal } from '../../components/AddModal';
 import { retrieveExerciseLog, retrieveExerciseLogByUser } from '../../api/exerciseApi';
-import { isAuthenticated } from '../../helpers/authHelper';
+import { getUserId, isAuthenticated } from '../../helpers/authHelper';
 import Button from '../../components/Button';
 import Text from '../../components/Text';
 import Header from '../../components/Header';
@@ -20,6 +20,7 @@ import UserSelectModal from '../../components/userSelectModal';
 import { FaTimes } from 'react-icons/fa';
 import { formatDate } from '../../helpers/format';
 import { retrieveUsers } from '../../api/playersApi';
+import { RecordEditModal } from '../../components/RecordEditModal';
 
 export const months = [
   { name: 'January', value: 0 },
@@ -47,6 +48,9 @@ export const Activity = () => {
 
   const [ userSelectModal, setUserSelectModal ] = useState(false);
   const [ userList, setUserList ] = useState([]);
+
+  const [ recordEditModal, openRecordEditModal ] = useState(false);
+  const [ activeRecord, setActiveRecord ] = useState({})
   
 
   const [ showCalendar, setShowCalendar ] = useState(false);
@@ -77,7 +81,7 @@ export const Activity = () => {
     if (activeFilters.user !== null) {
       const data = await retrieveExerciseLogByUser({
         exercise_id: activityId, 
-        user_id: activeFilters.user.user_id,
+        user_id: activeFilters.user.id,
         month: date.month+1, 
         year: date.year, 
         day: date.day 
@@ -92,7 +96,7 @@ export const Activity = () => {
         year: date.year, 
         day: date.day 
       });
-      console.log('fetching log: ', data);
+      console.log('FIRST fetching log: ', data);
       setExerciseLog(data);
     }
     
@@ -116,27 +120,6 @@ export const Activity = () => {
   // For Calendar
   const handleUpdatingTable = async (chosenDate) => {
     console.log('button clicked')
-    // if (activeFilters.user !== null) {
-    //   const data = await retrieveExerciseLogByUser({
-    //     exercise_id: activityId,
-    //     user_id: activeFilters.user.user_Id,
-    //     month: chosenDate.month+1,
-    //     year: chosenDate.year,
-    //     day: chosenDate.day
-    //   })
-    //   console.log('A', data);
-    //   setExerciseLog(data);
-
-    // } else {
-    //   const data = await retrieveExerciseLog({
-    //     exercise_id: activityId,
-    //     month: chosenDate.month+1,
-    //     year: chosenDate.year,
-    //     day: chosenDate.day
-    //   });
-    //   console.log('B', data);
-    //   setExerciseLog(data);
-    // }
 
     setDate(chosenDate);
     setActiveFilters({
@@ -146,25 +129,47 @@ export const Activity = () => {
     setShowCalendar(false);
   }
 
-  // const handleSave = (selectedMonth, selectedYear) => {
-  //   if (selectedMonth === month && selectedYear === year) {
-  //     setShowFilterModal(false);
-  //     return;
-  //   }
-  //   setMonth(selectedMonth);
-  //   setYear(selectedYear);
-  //   setShowFilterModal(false);
-  // }
+  const handleRecordClick = async (user_id, log_id) => {
+    if (activeFilters.user !== null) {
+      if (user_id === getUserId()) {
+        openRecordEditModal(true);
+        const record = exerciseLog.find(e => e.log_id === log_id);
+        setActiveRecord(record);
+      }
+      return;
+    };
 
-  // const resetFilter = () => {
-  //   setMonth(currentMonth);
-  //   setYear(currentYear);
-  // }
+    console.log('button clicked');
+    setExerciseLog([]);
+    const user = userList.find(u => u.id === user_id);
+    setDate({
+      day: -1,
+      month: new Date().getMonth(),
+      year: new Date().getFullYear()
+    });
+
+    setActiveFilters({
+      user: user,
+      date: date
+    })
+
+    // const data = await retrieveExerciseLogByUser({
+    //   exercise_id: activityId, 
+    //   user_id: user.id,
+    //   month: date.month+1, 
+    //   year: date.year, 
+    //   day: date.day 
+    // });
+    // console.log('updating table by record click:', data);
+    // setExerciseLog(data);
+  }
 
   const activityStreakFound = streaks.find(s => s.exercise_id === parseInt(activityId, 10)) || { exercise_id: activityId, streak_number: 0, last_updated: null };
   const activityStreak = activityStreakFound.streak_number || 0;
 
   const clearFilters = () => {
+    console.log('clearing filters')
+    setExerciseLog([]);
     setDate({
       day: -1,
       month: new Date().getMonth(),
@@ -175,15 +180,15 @@ export const Activity = () => {
       user: null,
       date: date
     });
-
-    fetchExerciseLog();
   }
 
   useEffect(() => {
     fetchExerciseLog();
-    fetchStreaks();
+    // fetchStreaks();
     fetchUsers();
   }, [activeFilters])
+
+  // console.log('LOOK', exerciseLog)
 
   return (
     <div className=' relative min-h-[100vh]'>
@@ -287,6 +292,7 @@ export const Activity = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.2 }}
+                  onClick={() => handleRecordClick(person.user_id, person.log_id)}
                   className="flex justify-between bg-[#201726] text-[#918E9D] rounded-md px-4 py-3"
                   >
                     <span>{activeFilters.user === null ? index +1 : formatDate(person.date)}</span>
@@ -327,6 +333,7 @@ export const Activity = () => {
         user: user,
         date: date
       })} />
+      <RecordEditModal isOpen={recordEditModal} onClose={() => openRecordEditModal(false)} onSave={() => null} record={activeRecord} />
     </div>
   )
 }

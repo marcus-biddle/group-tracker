@@ -342,6 +342,39 @@ app.get('/api/streak/player', authenticateToken, async (req, res) => {
   }
 });
 
+// Add authenticate to this after testing
+app.put('/api/exercises/log', async (req, res) => {
+  const { log_id, date, exercise_count } = req.body;
+
+  if (!log_id || !date || exercise_count == null) {
+    return res.status(400).json({ error: 'Please provide id, date, and count' });
+  }
+
+  try {
+    const query = `
+      UPDATE public.exercise_log
+      SET date = $1, exercise_count = $2
+      WHERE id = $3
+      RETURNING *;
+    `;
+    const values = [date, exercise_count, log_id];
+
+    const result = await pool.query(query, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Record not found' });
+    }
+
+    res.status(200).json({
+      message: 'Record updated successfully',
+      record: result.rows[0],
+    });
+  } catch (err) {
+    console.error('Error updating record:', err);
+    res.status(500).json({ error: 'Failed to update record' });
+  }
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -4,7 +4,6 @@ import { FaTimes } from 'react-icons/fa';
 
 const UserSelectModal = ({ isOpen, onClose, users, onSelectUser }) => {
   const [searchTerm, setSearchTerm] = useState('');
-  console.log('userSel', users)
 
   const filteredUsers = users.filter(user =>
     user.fullname.toLowerCase().includes(searchTerm.toLowerCase())
