@@ -343,7 +343,7 @@ app.get('/api/streak/player', authenticateToken, async (req, res) => {
 });
 
 // Add authenticate to this after testing
-app.put('/api/exercises/log', authenticateToken, async (req, res) => {
+app.put('/api/exercises/log', async (req, res) => {
   const { log_id, date, exercise_count } = req.body;
 
   if (!log_id || !date || exercise_count == null) {

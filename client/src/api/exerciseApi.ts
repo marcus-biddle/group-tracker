@@ -65,3 +65,12 @@ export const updateExercise = async (exerciseData: any) => {
       console.error('Error logging exercise:', error);
   }
 }
+
+export const deleteExercise = async (exerciseData: any) => {
+  try {
+      const response = await axiosInstance.put('/exercises/log', exerciseData);
+      return response.data; 
+  } catch (error) {
+      console.error('Error logging exercise:', error);
+  }
+}
