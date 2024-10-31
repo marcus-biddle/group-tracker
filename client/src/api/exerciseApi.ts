@@ -56,3 +56,12 @@ export const logExercise = async (exerciseData: ExerciseLogData) => {
       throw error; // Re-throw the error for further handling if needed
   }
 };
+
+export const updateExercise = async (exerciseData: any) => {
+  try {
+      const response = await axiosInstance.put('/exercises/log', exerciseData);
+      return response.data; 
+  } catch (error) {
+      console.error('Error logging exercise:', error);
+  }
+}

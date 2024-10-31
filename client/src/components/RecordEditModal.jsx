@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { updateExercise } from '../api/exerciseApi';
 
-export const RecordEditModal = ({ isOpen, onClose, onSave, record }) => {
+export const RecordEditModal = ({ isOpen, onClose, onCancel, onSave, record }) => {
+  if (!isOpen) return;
+
   console.log('modal record:', record, record.exercise_count);
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -20,9 +23,14 @@ export const RecordEditModal = ({ isOpen, onClose, onSave, record }) => {
   //   }
   // }, [isOpen, record]);
 
-  const handleSave = () => {
+  const handleSave = async() => {
     console.log({ ...record, date, exercise_count: count });
-    // onClose();
+    updateExercise({
+      log_id: record.log_id, 
+      date: date, 
+      exercise_count: count
+    })
+    onClose();
   };
 
   const handleDelete = () => {
@@ -52,6 +60,7 @@ export const RecordEditModal = ({ isOpen, onClose, onSave, record }) => {
               <input
                 type="date"
                 value={date}
+                max={new Date().toISOString().split("T")[0]}
                 onChange={(e) => setDate(e.target.value)}
                 className="w-full p-2 rounded-md bg-[#322a37] border border-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
@@ -75,7 +84,7 @@ export const RecordEditModal = ({ isOpen, onClose, onSave, record }) => {
                 Delete
               </button>
               <button 
-                onClick={onClose} 
+                onClick={onCancel} 
                 className="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-500 transition text-white"
               >
                 Cancel

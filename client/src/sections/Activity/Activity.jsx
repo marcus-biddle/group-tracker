@@ -117,6 +117,19 @@ export const Activity = () => {
     }
   };
 
+  const handleClosingRecordEditModal = async() => {
+    const data = await retrieveExerciseLogByUser({
+      exercise_id: activityId, 
+      user_id: activeFilters.user.id,
+      month: date.month+1, 
+      year: date.year, 
+      day: date.day 
+    })
+    console.log('fetching user logs after record update', data)
+    setExerciseLog(data);
+    openRecordEditModal(false);
+  }
+
   // For Calendar
   const handleUpdatingTable = async (chosenDate) => {
     console.log('button clicked')
@@ -333,7 +346,7 @@ export const Activity = () => {
         user: user,
         date: date
       })} />
-      <RecordEditModal isOpen={recordEditModal} onClose={() => openRecordEditModal(false)} onSave={() => null} record={activeRecord} />
+      <RecordEditModal isOpen={recordEditModal} onClose={() => handleClosingRecordEditModal()} onCancel={() => openRecordEditModal(false)} onSave={() => null} record={activeRecord} />
     </div>
   )
 }

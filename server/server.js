@@ -343,7 +343,7 @@ app.get('/api/streak/player', authenticateToken, async (req, res) => {
 });
 
 // Add authenticate to this after testing
-app.put('/api/exercises/log', async (req, res) => {
+app.put('/api/exercises/log', authenticateToken, async (req, res) => {
   const { log_id, date, exercise_count } = req.body;
 
   if (!log_id || !date || exercise_count == null) {
@@ -372,6 +372,35 @@ app.put('/api/exercises/log', async (req, res) => {
   } catch (err) {
     console.error('Error updating record:', err);
     res.status(500).json({ error: 'Failed to update record' });
+  }
+});
+
+app.delete('/api/exercises/log', async (req, res) => {
+  const { log_id } = req.body; // ID of the record to delete
+
+  try {
+    // Check if record_id is provided
+    if (!log_id) {
+      return res.status(400).json({ error: "Record ID is required" });
+    }
+
+    const deleteQuery = `
+      DELETE FROM public.exercise_log
+      WHERE id = $1
+      RETURNING *;
+    `;
+
+    const result = await pool.query(deleteQuery, [log_id]);
+
+    // Check if the record was found and deleted
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: "Record not found" });
+    }
+
+    res.status(200).json({ message: "Record deleted successfully", deletedRecord: result.rows[0] });
+  } catch (err) {
+    console.error("Error deleting record:", err);
+    res.status(500).json({ error: "Failed to delete record" });
   }
 });
 
