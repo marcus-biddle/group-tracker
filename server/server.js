@@ -377,6 +377,7 @@ app.put('/api/exercises/log', async (req, res) => {
 
 app.delete('/api/exercises/log', async (req, res) => {
   const { log_id } = req.body; // ID of the record to delete
+  console.log('DELETE', log_id);
 
   try {
     // Check if record_id is provided

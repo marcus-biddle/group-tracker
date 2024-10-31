@@ -67,8 +67,9 @@ export const updateExercise = async (exerciseData: any) => {
 }
 
 export const deleteExercise = async (exerciseData: any) => {
+  console.log(exerciseData)
   try {
-      const response = await axiosInstance.put('/exercises/log', exerciseData);
+      const response = await axiosInstance.delete('/exercises/log', exerciseData);
       return response.data; 
   } catch (error) {
       console.error('Error logging exercise:', error);
