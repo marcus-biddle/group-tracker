@@ -66,12 +66,23 @@ export const updateExercise = async (exerciseData: any) => {
   }
 }
 
-export const deleteExercise = async (exerciseData: any) => {
+export const deleteRecord = async (recordId: any) => {
+  try {
+    const response = await axiosInstance.delete(`/records/${recordId}`);
+    console.log('Record deleted:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting record:', error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const addExercise = async (exerciseData) => {
   console.log(exerciseData)
   try {
-      const response = await axiosInstance.delete('/exercises/log', exerciseData);
-      return response.data; 
+      const response = await axiosInstance.post('/exercises/add', exerciseData);
+      return response.data;
   } catch (error) {
-      console.error('Error logging exercise:', error);
+      throw error.response ? error.response.data : error.message;
   }
-}
+};

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { deleteExercise, updateExercise } from '../api/exerciseApi';
+import { deleteRecord, updateExercise } from '../api/exerciseApi';
 
 export const RecordEditModal = ({ isOpen, onClose, onCancel, onSave, record }) => {
   if (!isOpen) return;
@@ -34,9 +34,7 @@ export const RecordEditModal = ({ isOpen, onClose, onCancel, onSave, record }) =
   };
 
   const handleDelete = async() => {
-    deleteExercise({
-      log_id: record.log_id
-    })
+    deleteRecord(record.log_id)
     onClose();
   };
 

@@ -375,33 +375,53 @@ app.put('/api/exercises/log', async (req, res) => {
   }
 });
 
-app.delete('/api/exercises/log', async (req, res) => {
-  const { log_id } = req.body; // ID of the record to delete
-  console.log('DELETE', log_id);
+app.delete('/api/records/:recordId', async (req, res) => {
+  const { recordId } = req.params; // Extract recordId from the URL
+
+  console.log(recordId)
 
   try {
-    // Check if record_id is provided
-    if (!log_id) {
-      return res.status(400).json({ error: "Record ID is required" });
-    }
-
-    const deleteQuery = `
-      DELETE FROM public.exercise_log
-      WHERE id = $1
-      RETURNING *;
-    `;
-
-    const result = await pool.query(deleteQuery, [log_id]);
+    const result = await pool.query('DELETE FROM public.exercise_log WHERE id = $1', [recordId]);
 
     // Check if the record was found and deleted
     if (result.rowCount === 0) {
-      return res.status(404).json({ error: "Record not found" });
+      return res.status(404).json({ error: 'Record not found' });
     }
 
-    res.status(200).json({ message: "Record deleted successfully", deletedRecord: result.rows[0] });
+    // Successfully deleted the record
+    res.status(200).json({ message: 'Record deleted successfully' });
   } catch (err) {
-    console.error("Error deleting record:", err);
-    res.status(500).json({ error: "Failed to delete record" });
+    console.error(err);
+    res.status(500).json({ error: 'Failed to delete record' });
+  }
+});
+
+app.post('/api/exercises/add', async (req, res) => {
+  const { user_id, exercise_id, exercise_count, date } = req.body;
+  console.log(user_id, exercise_id, exercise_count, date );
+
+  // Validate the request
+  if (!user_id || !exercise_id || !exercise_count || !date) {
+    return res.status(400).json({ error: 'All fields are required' });
+  }
+
+  try {
+    const query = `
+      INSERT INTO exercise_log (user_id, exercise_id, exercise_count, date)
+      VALUES ($1, $2, $3, $4)
+      RETURNING *;  
+    `;
+
+    const values = [user_id, exercise_id, exercise_count, new Date(date)];
+
+    // Execute the query
+    const result = await pool.query(query, values);
+
+    // Respond with the newly created record
+    res.status(201).json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Failed to add exercise record' });
   }
 });
 

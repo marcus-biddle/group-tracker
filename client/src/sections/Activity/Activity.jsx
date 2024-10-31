@@ -1,13 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
-import { TfiBolt, TfiFilter } from "react-icons/tfi";
-import { FilterModal } from '../../components/FilterModal';
-import { AddModal } from '../../components/AddModal';
+import { AddRecordModal } from '../../components/AddRecordModal';
 import { retrieveExerciseLog, retrieveExerciseLogByUser } from '../../api/exerciseApi';
 import { getUserId, isAuthenticated } from '../../helpers/authHelper';
-import Button from '../../components/Button';
-import Text from '../../components/Text';
-import Header from '../../components/Header';
 import { FaFire } from "react-icons/fa";
 import { retrieveStreak } from '../../api/streakApi';
 import PopupDialog from '../../components/PopupDialog';
@@ -39,8 +34,7 @@ export const months = [
 
 export const Activity = () => {
   const { activityId, activityname } = useParams();
-  const [showFilterModal, setShowFilterModal] = useState(false);
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [ addRecordModal, openAddRecordModal ] = useState(false);
   // const [ month, setMonth ] = useState(currentMonth);
   // const [ year, setYear ] = useState(currentYear);
   const [ exerciseLog, setExerciseLog ] = useState([]);
@@ -118,6 +112,7 @@ export const Activity = () => {
   };
 
   const handleClosingRecordEditModal = async() => {
+    setExerciseLog([]);
     const data = await retrieveExerciseLogByUser({
       exercise_id: activityId, 
       user_id: activeFilters.user.id,
@@ -128,6 +123,12 @@ export const Activity = () => {
     console.log('fetching user logs after record update', data)
     setExerciseLog(data);
     openRecordEditModal(false);
+  }
+
+  const handleClosingAddRecordModal = () => {
+    setExerciseLog([]);
+    fetchExerciseLog();
+    openAddRecordModal(false);
   }
 
   // For Calendar
@@ -256,7 +257,7 @@ export const Activity = () => {
         </div> */}
 
         <div className='bg-[#19141e] my-4 p-4 rounded-md relative flex justify-evenly shadow-md'>
-          <button onClick={() => setShowAddModal(true)} className=' bg-transparent active:bg-[#201726]'>
+          <button onClick={() => openAddRecordModal(true)} className=' bg-transparent active:bg-[#201726]'>
             <GoPlus className='text-[#84818D] text-4xl' />
           </button>
           <div className="border-l-2 border-[#84818D] border-opacity-50"></div>
@@ -338,7 +339,6 @@ export const Activity = () => {
         </div>
       </div>
       {/* <FilterModal showModal={showFilterModal} setShowModal={setShowFilterModal} onSave={{}} /> */}
-      <AddModal showModal={showAddModal} setShowModal={setShowAddModal} />
       {showCalendar && <div className=' absolute top-0 h-screen flex justify-center items-center w-full px-6 bg-black bg-opacity-50'>
         <Calendar setShowCalendar={setShowCalendar} setDate={setDate} date={date} handleUpdatingTable={handleUpdatingTable} />
       </div>}
@@ -347,6 +347,7 @@ export const Activity = () => {
         date: date
       })} />
       <RecordEditModal isOpen={recordEditModal} onClose={() => handleClosingRecordEditModal()} onCancel={() => openRecordEditModal(false)} onSave={() => null} record={activeRecord} />
+      <AddRecordModal isOpen={addRecordModal} onClose={handleClosingAddRecordModal} onCancel={() => openAddRecordModal(false)} exerciseId={activityId} />
     </div>
   )
 }
