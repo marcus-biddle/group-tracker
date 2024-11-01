@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
-import { TfiMenu, TfiClose } from "react-icons/tfi";
 import { NavLink, useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../helpers/authHelper';
-import Button from '../components/Button';
-import Header from '../components/Header';
 import { GiEcology } from "react-icons/gi";
+import { SlidingMenu } from '../components/SlidingMenu';
 
 export const TopNav = () => {
   const [ isOpen, setIsOpen ] = useState(false);
@@ -25,11 +23,6 @@ export const TopNav = () => {
         {/* Add user name here */}
         {isAuthenticated() && <span className='font-semibold px-4'>Marcus</span>}
       </div>
-      
-
-      <button className=' border-[#00B2CC] bg-transparent border-2'>
-        <TfiMenu className=' w-full h-full text-[#00B2CC]' />
-      </button>
         
       {/* <Button size='medium' onClick={() => setIsOpen(!isOpen)}>
         {
@@ -41,7 +34,7 @@ export const TopNav = () => {
       </Button> */}
 
       {/* Menu */}
-      <div
+      {/* <div
       className={`fixed top-0 right-0 z-50 h-full w-full bg-secondaryMenu p-10 transition-transform duration-300 ease-in-out flex flex-col items-start space-y-6 ${
         isOpen ? 'translate-x-0' : 'translate-x-full'
       }`}
@@ -60,7 +53,8 @@ export const TopNav = () => {
           }
         </div>
         
-      </div>
+      </div> */}
+      <SlidingMenu />
     </div>
   )
 }
