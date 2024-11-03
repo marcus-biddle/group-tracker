@@ -7,6 +7,7 @@ import Header from '../../components/Header';
 import Slider from "react-slick";
 import { motion, useAnimation } from 'framer-motion';
 import { FaArrowRight } from "react-icons/fa";
+import { FaTimes } from 'react-icons/fa';
 
 const animeQuotes = [
     { quote: '"The only way to truly escape the mundane…is to constantly evolve."', author: 'Saitama'},
@@ -64,36 +65,19 @@ export const IntroList = ({ exerciseList }) => {
                         animate={{ opacity: 1, y: 0 }}
                         // transition={{ delay: index * 0.2 }}
                         whileTap={{ scale: 0.5 }}
-                        className="transition-all ease-out bg-[#322a37] bg-opacity-75 text-[#CFCDDD] inline-block px-6 py-4 rounded-md font-semibold tracking-wide capitalize shadow-md"
+                        className={`${exercise.exercise_name === activeButton ? 'text-[#00B2CC]' : ''} transition-all ease-out bg-[#322a37] bg-opacity-75 text-[#CFCDDD] inline-block px-6 py-4 rounded-md font-semibold tracking-wide capitalize shadow-md`}
                         >
                             <div className=' '>{exercise.exercise_name}</div>
                     </motion.button>
                 </div>
                     
                 ))}
-            
-            {/* <motion.button
-            onClick={() => setActiveButton('pullups')}
-            whileHover={{ scale: 1.15, backgroundColor: '#ffffff', color: '#4c51bf' }}
-            whileTap={{ scale: 0.8 }}
-            className="transition-all ease-out bg-[#322a37] bg-opacity-75 text-[#CFCDDD] inline-block px-6 py-4 rounded-md font-semibold tracking-wide capitalize shadow-md"
-            >
-                <div className=' '>pullups</div>
-            </motion.button>
-            <motion.button
-            onClick={() => setActiveButton('running')}
-            whileHover={{ scale: 1.15, backgroundColor: '#ffffff', color: '#4c51bf' }}
-            whileTap={{ scale: 0.8 }}
-            className="transition-all ease-out bg-[#322a37] bg-opacity-75 text-[#CFCDDD] inline-block px-6 py-4 rounded-md font-semibold tracking-wide capitalize shadow-md"
-            >
-                <div className=' '>running</div>
-            </motion.button> */}
         </div>
         <div className="flex justify-center items-center">
       <motion.div
         // onClick={toggleExpand}
         key={activeButton}
-        initial={{ width: 50, height: 50, opacity: 0, x: -100, y: -100 }}
+        initial={{ width: 50, height: 50, opacity: 0, x: 0, y: 0 }}
         animate={{
           width: activeButton !== '' ? "100%" : 50,
           height: activeButton !== '' ? "100%" : 50,
@@ -106,21 +90,24 @@ export const IntroList = ({ exerciseList }) => {
       >
         {activeButton !== '' && (
             <div>
-                <div onClick={() => setActiveButton('')} className='absolute px-2 pb-1 top-2 right-4 border border-[#00B2CC] text-[#00B2CC] font-semibold rounded-md text-2xl flex justify-center items-center'>
-                    &times;
+                <div className='flex justify-between p-4'>
+                    <h1 className="text-4xl font-semibold text-[#EFEDFD] capitalize">{activeButton}</h1>
+                    <button onClick={() => navigate(currentActivityLink)} className="text-[#00B2CC] border border-[#00B2CC] bg-transparent">
+                        <FaArrowRight />
+                    </button>
                 </div>
-                <div className="mx-6 mt-14 mb-6 rounded-md p-8 bg-[#120D18] shadow-md">
+                <div className="mx-6 mb-6 rounded-md p-8 bg-[#120D18] shadow-md">
                     <div className='flex justify-between items-center'>
-                        <h1 className="text-4xl font-semibold text-[#EFEDFD] capitalize">{activeButton}</h1>
-                        <button onClick={() => navigate(currentActivityLink)} className='h-full text-[#EFEDFD] bg-[#19121D] shadow-lg'>
+                        
+                        {/* <button onClick={() => navigate(currentActivityLink)} className='h-full text-[#EFEDFD] bg-[#19121D] shadow-lg'>
                             <FaArrowRight />
-                        </button>
+                        </button> */}
                     </div>
                     
                     <p className="mt-2 text-[#7C7986] font-semibold text-md">
                         {randomQuote.quote} <br />-{randomQuote.author}
                     </p>
-                    <p className='text-[#7C7986] my-4 font-bold text-xl'>Top Players</p>
+                    {/* <p className='text-[#CFCDDD] my-4 font-bold text-xl'>Top Players</p>
                     <div className=' space-y-4'>
                         <motion.div
                             key={'a'}
@@ -152,7 +139,7 @@ export const IntroList = ({ exerciseList }) => {
                             <span>Winner Winner</span>
                             <span>1000 reps</span>
                         </motion.div>
-                    </div>
+                    </div> */}
                 </div>
                 
             </div>
