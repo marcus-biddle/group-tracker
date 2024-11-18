@@ -47,9 +47,9 @@ export const retrieveExerciseLog = async (exerciseFilters: ExerciseLogData) => {
       }
     };
 
-    export const retrieveAllExerciseLogsGroupedByUser = async () => {
+    export const retrieveAllExerciseLogsGroupedByUser = async (exerciseFilters: ExerciseLogData) => {
       try {
-        const response = await axiosInstance.get('/exercises/log/all');
+        const response = await axiosInstance.post('/exercises/log/all', exerciseFilters);
         return response.data;
       } catch (error) {
         throw new Error(error.response?.data?.message || 'Could not retrieve exercises for user.');

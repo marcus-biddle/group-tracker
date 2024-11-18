@@ -195,7 +195,7 @@ app.post('/api/exercises/log/user', async (req, res) => {
   }
 });
 
-app.get('/api/exercises/log/all', async (req, res) => {
+app.post('/api/exercises/log/all', async (req, res) => {
   const { month, year, day } = req.body;
   console.log('Parameters:', { month, year, day });
   try {

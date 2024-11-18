@@ -6,8 +6,12 @@ const ActivityPage = () => {
   const [ exerciseLog, setExerciseLog ] = useState([]);
 
   const fetchExerciseLog = async () => {
-      const data = await retrieveAllExerciseLogsGroupedByUser();
-      console.log('BOOM',data);
+      const data = await retrieveAllExerciseLogsGroupedByUser({ 
+        month: date.month+1, 
+        year: date.year, 
+        day: -1 || date.day 
+      });
+      console.log('FIRST fetching log: ', data);
       setExerciseLog(data);
   }
 
