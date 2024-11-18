@@ -144,6 +144,7 @@ export const Activity = () => {
   }
 
   const handleRecordClick = async (user_id, log_id) => {
+    console.log('handleRecordClick')
     if (activeFilters.user !== null) {
       if (user_id === getUserId()) {
         openRecordEditModal(true);

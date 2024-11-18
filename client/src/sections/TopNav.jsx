@@ -1,8 +1,15 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom';
 import { isAuthenticated } from '../helpers/authHelper';
 import { GiEcology } from "react-icons/gi";
 import { SlidingMenu } from '../components/SlidingMenu';
+import { GoPersonAdd, GoPlus, GoCalendar, GoGraph } from "react-icons/go";
+import { retrieveUsers } from '../api/playersApi';
+import { retrieveExercises } from '../api/exerciseApi';
+
+const subNavGuide = [
+  'Activity', 'Players',
+]
 
 export const TopNav = () => {
   const [ isOpen, setIsOpen ] = useState(false);
@@ -14,14 +21,47 @@ export const TopNav = () => {
     setIsOpen(false);
   };
 
+  const [ exerciseList, setExerciseList ] = useState([]);
+  const [ playerList, setPlayerList ] = useState([]);
+
+    const fetchExercises = async () => {
+        try {
+            const data = await retrieveExercises();
+            console.log('Successfully retrieved exercises:', data);
+            setExerciseList(data);
+        } catch (error) {
+            console.error('Error fetching exercises:', error);
+        }
+    }
+
+    const fetchPlayerList = async () => {
+      try {
+        const data = await retrieveUsers();
+        console.log('Successfully retrieved players:', data);
+        setPlayerList(data);
+      } catch (error) {
+        console.error('Error fetching players:', error);
+      }
+    }
+
+    useEffect(() => {
+        fetchExercises();
+        fetchPlayerList();
+    }, []);
+
   return (
-    <div className=' flex items-center justify-between py-6 px-8 z-50 text-[#B3B3B3]'>
+    <>
+    <div className=' flex items-center justify-between py-4 px-8 z-50 text-[#B3B3B3] bg-[#19141E] shadow-lg'>
       <div className=' flex justify-center items-center'>
-        <div className='bg-transparent w-10' onClick={goHome}>
-          <GiEcology className='w-full h-full text-[#00B2CC]' />
-        </div>
-        {/* Add user name here */}
-        {isAuthenticated() && <span className='font-semibold px-4'>Marcus</span>}
+        <button className='bg-transparent' onClick={goHome}>
+          <GiEcology className='w-full h-full text-[#00B2CC] scale-150' />
+        </button>
+      </div>
+      <div className=' flex justify-center items-center'>
+        <span>Date</span>
+        <button onClick={() => setShowCalendar(true)} className='text-[#00B2CC] bg-[#322a37] bg-opacity-75'>
+          <GoCalendar className='w-full h-full scale-150' />
+        </button>
       </div>
         
       {/* <Button size='medium' onClick={() => setIsOpen(!isOpen)}>
@@ -54,7 +94,14 @@ export const TopNav = () => {
         </div>
         
       </div> */}
-      <SlidingMenu />
+      {/* <SlidingMenu /> */}
     </div>
+    <div className='flex w-full justify-evenly'>
+      {subNavGuide.map((category) => (
+        <div key={category} className=' w-full flex items-center justify-evenly py-4 px-8 z-50 text-[#B3B3B3] bg-[#1d1723] shadow-lg'>{category}</div>
+      ))}
+    </div>
+    </>
+    
   )
 }
