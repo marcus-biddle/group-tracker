@@ -172,21 +172,24 @@ app.post('/api/exercises/log/user', async (req, res) => {
           CONCAT(u.firstname, ' ', u.lastname) AS fullname,
           el.exercise_count,
           el.date,
-          el.exercise_id
+          el.exercise_id,
+          et.exercise_name  -- Include exercise name
       FROM 
           public.exercise_log el
       JOIN 
           public.users u ON el.user_id = u.id
+      JOIN 
+          public.exercise_types et ON el.exercise_id = et.exercise_id  -- Join with exercise_type to get exercise_name
       WHERE 
           u.id = $1  -- Only filter by user_id
       ORDER BY 
           el.date DESC;
     `;
-    
+
     const result = await pool.query(query, [user_id]);
-    
+
     // Process the result into the desired format
-    const groupedData = result.rows.reduce((acc, { user_id, fullname, date, exercise_id, exercise_count }) => {
+    const groupedData = result.rows.reduce((acc, { user_id, fullname, date, exercise_id, exercise_count, exercise_name }) => {
       // Format date to 'YYYY-MM-DD' for consistency
       const formattedDate = new Date(date).toISOString().split('T')[0];
 
@@ -215,6 +218,7 @@ app.post('/api/exercises/log/user', async (req, res) => {
       } else {
         acc[user_id].dates[formattedDate].exercises.push({
           exercise_id,
+          exercise_name: exercise_name, // Include the exercise name
           total_exercise_count: parseInt(exercise_count, 10) // Create a new exercise entry
         });
       }
@@ -235,6 +239,7 @@ app.post('/api/exercises/log/user', async (req, res) => {
     res.status(500).json({ error: 'Failed to retrieve exercises' });
   }
 });
+
 
 
 app.post('/api/exercises/log/all', async (req, res) => {

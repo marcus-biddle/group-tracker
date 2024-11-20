@@ -1,7 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { retrieveExerciseLogByUser } from '../../api/exerciseApi';
+import { getUserId } from '../../helpers/authHelper';
 
 export const ProfilePage = () => {
     const [userData, setUserData] = useState([]);
+    const userId = getUserId();
+
+    const fetchUserData = async () => {
+        const data = await retrieveExerciseLogByUser({user_id: userId});
+        setUserData(data);
+        console.log(data)
+    }
+
+    useEffect(() => {
+
+    }, [])
   return (
     <div className='p-8 flex flex-col gap-y-8'>
         <div>
