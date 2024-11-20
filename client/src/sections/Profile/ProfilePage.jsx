@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import { retrieveExerciseLogByUser, updateExercise } from '../../api/exerciseApi';
+import { deleteRecord, retrieveExerciseLogByUser, updateExercise } from '../../api/exerciseApi';
 import { getUserId } from '../../helpers/authHelper';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {motion} from 'framer-motion'
+import { useNavigate } from 'react-router';
 
 const userId = getUserId();
 
@@ -39,19 +40,48 @@ export const ProfilePage = () => {
       const [entryDate, setEntryDate] = useState("");
       const [entryCount, setEntryCount] = useState('');
 
+      const navigate = useNavigate();
+
     
       const handleSave = async() => {
-        console.log(entryCount, entryDate);
-        // await updateExercise({
-        //   log_id: record.log_id, 
-        //   date: date, 
-        //   exercise_count: count
-        // })
+        try {
+            await updateExercise({
+                log_id: activeEntry.exercises.log_id, 
+                date: entryDate, 
+                exercise_count: entryCount
+              })
+              fetchUserData();
+              openEntryModal(false);
+        } catch {
+            navigate('/auth')
+        }
+        
       };
+
+      console.log(userData)
     
       const handleDelete = async() => {
-        deleteRecord(record.log_id)
-        onClose();
+        try {
+            deleteRecord(activeEntry.exercises.log_id)
+            setUserData((prevUserData) => {
+                return prevUserData.map((entry) => {
+                  if (entry.date === activeEntry.date) {
+                    // Filter out the exercise with the log_id from the exercises array
+                    return {
+                      ...entry,
+                      exercises: entry.exercises.filter(
+                        (exercise) => exercise.log_id !== activeEntry.exercises.log_id
+                      ),
+                    };
+                  }
+                  return entry;
+                });
+              });
+            openEntryModal(false);
+        } catch {
+            navigate('/auth')
+        }
+        
       };
 
   const handleStartDateChange = (e) => {
@@ -70,6 +100,8 @@ export const ProfilePage = () => {
         date: date,
         exercises: item
     })
+    setEntryCount(item.total_exercise_count);
+    setEntryDate(date)
     openEntryModal(true);
   }
     
@@ -92,14 +124,14 @@ export const ProfilePage = () => {
     
   return (
     <div className='relative p-8 flex flex-col gap-y-8'>
-        <div>
+        {/* <div>
             <h3 className='text-white text-[18px]'>Your Stats</h3>
             <div className='bg-[#291B34] rounded-md shadow-lg p-4 flex flex-col gap-2'>
                 <p>Streak:</p>
                 <p>Total Entries:</p>
                 <p>Total Count:</p> 
             </div>
-        </div>
+        </div> */}
         <div>
             <h3 className='text-white text-[18px]'>Your Entries</h3>
             <div className="flex items-center space-x-4 bg-[#120D18] p-4 rounded-md shadow-md">
@@ -161,7 +193,7 @@ export const ProfilePage = () => {
                 <label className="block mb-2 text-sm font-semibold">Date</label>
                 <input
                   type="date"
-                  value={activeEntry.date}
+                  value={entryDate}
                   max={new Date().toISOString().split("T")[0]}
                   onChange={(e) => setEntryDate(e.target.value)}
                   className="w-full p-2 rounded-md bg-[#322a37] border border-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
@@ -172,7 +204,7 @@ export const ProfilePage = () => {
                 <label className="block mb-2 text-sm font-semibold">Count</label>
                 <input
                   type="number"
-                  value={activeEntry.exercises.total_exercise_count}
+                  value={entryCount}
                   onChange={(e) => setEntryCount(e.target.value)}
                   className="w-full p-2 rounded-md bg-[#322a37] border border-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 />

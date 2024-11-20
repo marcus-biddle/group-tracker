@@ -34,7 +34,7 @@ export const LogPage = () => {
 
   return (
     <>
-    <div className="min-h-[550px] flex flex-col justify-evenly items-center py-8 px-6">
+    <div className="min-h-[550px] flex flex-col justify-evenly items-center py-8 px-6 z-10">
         <h1 className="text-2xl font-bold text-[#C1BFCD] text-left w-full">
           Log Exercise Count
         </h1>
@@ -96,7 +96,7 @@ export const LogPage = () => {
         </button>
     </div>
 
-    {cautionModal && <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+    {cautionModal && <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">
       <div className="bg-teal-100 p-6 rounded-md w-96 shadow-lg">
         <h2 className="text-2xl font-semibold text-teal-800 mb-4">Caution!</h2>
         <p className="text-slate-900 mb-4">

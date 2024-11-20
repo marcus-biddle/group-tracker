@@ -83,7 +83,7 @@ export const TopNav = () => {
           <GiEcology className='w-full h-full text-[#00B2CC] scale-150' />
         </button>
       </div>
-      <div className=' flex justify-center items-center'>
+      <div className=' flex justify-center items-center gap-8'>
         <span className='mx-2'>{months[headerData.date.month-1].name} {headerData.date.day === -1 ? '' : `${headerData.date.day},`} {headerData.date.year}</span>
         <button onClick={() => setShowCalendar(true)} className='text-[#00B2CC] bg-[#322a37] bg-opacity-75'>
           <GoCalendar className='w-full h-full scale-150' />
@@ -128,7 +128,7 @@ export const TopNav = () => {
       ))}
     </div>
 
-    {showCalendar && <div className=' absolute top-0 h-screen flex justify-center items-center w-full px-6 bg-black bg-opacity-50'>
+    {showCalendar && <div className=' absolute top-0 h-screen flex justify-center items-center w-full px-6 bg-black bg-opacity-50 z-50'>
         <Calendar setShowCalendar={setShowCalendar} />
       </div>}
     </>

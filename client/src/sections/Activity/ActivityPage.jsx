@@ -57,7 +57,7 @@ const ActivityPage = () => {
                     <div className="absolute z-10 mt-2 w-28 origin-top-right rounded-md shadow-lg">
                       <ul className="py-1 text-[#00B2CC] bg-[#322a37]" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
                         {exerciseList.map((exercise, index) => (
-                          <li onClick={() => handleExerciseDropdown(exercise)} className="block capitalize font-semibold px-4 py-2 text-sm ">
+                          <li key={index} onClick={() => handleExerciseDropdown(exercise)} className="block capitalize font-semibold px-4 py-2 text-sm ">
                               {exercise}
                           </li>
                         ))}
