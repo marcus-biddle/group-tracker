@@ -189,7 +189,7 @@ app.post('/api/exercises/log/user', async (req, res) => {
     const result = await pool.query(query, [user_id]);
 
     // Process the result into the desired format
-    const groupedData = result.rows.reduce((acc, { user_id, fullname, date, exercise_id, exercise_count, exercise_name }) => {
+    const groupedData = result.rows.reduce((acc, { user_id, fullname, date, exercise_id, exercise_count, exercise_name, log_id }) => {
       // Format date to 'YYYY-MM-DD' for consistency
       const formattedDate = new Date(date).toISOString().split('T')[0];
 
@@ -217,6 +217,7 @@ app.post('/api/exercises/log/user', async (req, res) => {
         existingExercise.total_exercise_count += parseInt(exercise_count, 10); // Add to existing exercise count
       } else {
         acc[user_id].dates[formattedDate].exercises.push({
+          log_id,
           exercise_id,
           exercise_name: exercise_name, // Include the exercise name
           total_exercise_count: parseInt(exercise_count, 10) // Create a new exercise entry
