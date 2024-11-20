@@ -122,9 +122,9 @@ export const TopNav = () => {
       </div> */}
       {/* <SlidingMenu /> */}
     </div>
-    <div className='flex w-full justify-evenly'>
+    <div className='flex w-full bg-[#322a37] bg-opacity-75'>
       {subNavGuide.map((category) => (
-        <NavLink to={`/${category}`} key={category} className={`${category === pathname || pathname === null && category === 'activity' ? 'border-b-2' : ''} w-full capitalize flex items-center justify-evenly py-4 px-8 z-50 text-[#B3B3B3] visited:text-[#B3B3B3] bg-[#1d1723] shadow-lg`}>{category}</NavLink>
+        <NavLink to={`/${category}`} key={category} className={`${category === pathname || pathname === null && category === 'activity' ? 'border-b-2' : 'border border-none'} bg-transparent w-full capitalize flex items-center justify-evenly py-4 px-8 z-50 text-[#B3B3B3] visited:text-[#B3B3B3] shadow-lg`}>{category}</NavLink>
       ))}
     </div>
 
