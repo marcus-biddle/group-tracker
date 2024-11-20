@@ -47,10 +47,11 @@ export const retrieveExerciseLog = async (exerciseFilters: ExerciseLogData) => {
       }
     };
 
-    export const retrieveAllExerciseLogsGroupedByUser = async (exerciseFilters: ExerciseLogData) => {
+    export const retrieveAllExerciseLogsGroupedByUser = async (exerciseFilters: ExerciseLogData, dropdownSelection: string) => {
       try {
         const response = await axiosInstance.post('/exercises/log/all', exerciseFilters);
-        return response.data;
+        const formattedData = groupUsersById(response.data, dropdownSelection);
+        return formattedData;
       } catch (error) {
         throw new Error(error.response?.data?.message || 'Could not retrieve exercises for user.');
       }
@@ -87,7 +88,6 @@ export const deleteRecord = async (recordId: any) => {
 };
 
 export const addExercise = async (exerciseData) => {
-  console.log(exerciseData)
   try {
       const response = await axiosInstance.post('/exercises/add', exerciseData);
       return response.data;
@@ -95,3 +95,80 @@ export const addExercise = async (exerciseData) => {
       throw error.response ? error.response.data : error.message;
   }
 };
+
+function groupUsersById(data: any, dropdownSelection: string) {
+  const exerciseList = [
+    { exercise_id: 1, exercise_name: "pushups" },
+    { exercise_id: 2, exercise_name: "pullups" },
+    { exercise_id: 3, exercise_name: "running" }
+  ];
+
+  const groupedData = {};
+
+  data.forEach(item => {
+    const { user_id, fullname, exercise_id, exercise_name, total_exercise_count } = item;
+
+    // Check if the user already exists in the grouped data
+    if (!groupedData[user_id]) {
+      groupedData[user_id] = {
+        user_id,
+        fullname,
+        exercises: [] // Initialize an empty array for exercises
+      };
+    }
+
+    // Add the exercise details to the user's exercises array
+    groupedData[user_id].exercises.push({
+      exercise_id,
+      exercise_name,
+      total_exercise_count: parseInt(total_exercise_count, 10) // Ensure the count is a number
+    });
+  });
+
+  // Ensure every user has placeholders for missing exercises
+  Object.values(groupedData).forEach((user: any) => {
+    const existingExerciseIds = user.exercises.map(exercise => exercise.exercise_id);
+
+    exerciseList.forEach(exercise => {
+      if (!existingExerciseIds.includes(exercise.exercise_id)) {
+        // Add a placeholder with total_exercise_count set to 0
+        user.exercises.push({
+          exercise_id: exercise.exercise_id,
+          exercise_name: exercise.exercise_name,
+          total_exercise_count: 0
+        });
+      }
+    });
+
+    // Sort the exercises by exercise_id
+    user.exercises.sort((a, b) => a.exercise_id - b.exercise_id);
+  });
+
+  // Convert the grouped object back to an array for easier usage
+  let result = Object.values(groupedData);
+
+  // Sort users by the selected exercise if dropdownSelection is not null
+  if (dropdownSelection !== "null") {
+    const selectedExercise = exerciseList.find(
+      exercise => exercise.exercise_name === dropdownSelection
+    );
+
+    if (selectedExercise) {
+      const selectedExerciseId = selectedExercise.exercise_id;
+
+      result = result.sort((a: any, b: any) => {
+        const aCount = a.exercises.find(
+          (exercise: any) => exercise.exercise_id === selectedExerciseId
+        )?.total_exercise_count || 0;
+
+        const bCount = b.exercises.find(
+          (exercise: any) => exercise.exercise_id === selectedExerciseId
+        )?.total_exercise_count || 0;
+
+        return bCount - aCount; // Descending order
+      });
+    }
+  }
+
+  return result;
+}

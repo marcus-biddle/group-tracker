@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import './Calendar.css';
-import { months } from '../sections/Activity/Activity';
-import { retrieveExerciseLog } from '../api/exerciseApi';
+import { useHeaderData } from '../context/HeaderDataContext';
+import { months } from '../sections/TopNav';
 
-const Calendar = ({date, handleUpdatingTable}) => {
+const Calendar = ({ setShowCalendar }) => {
+  const { headerData, setHeaderData } = useHeaderData();
+  console.log(headerData.date)
   // Month and year state
-  const [currentYear, setCurrentYear] = useState(date.year);
-  const [currentMonth, setCurrentMonth] = useState(date.month);
-  const [currentDay, setCurrentDay] = useState(date.day)
+  const [currentYear, setCurrentYear] = useState(headerData.date.year);
+  const [currentMonth, setCurrentMonth] = useState(headerData.date.month);
+  const [currentDay, setCurrentDay] = useState(headerData.date.day)
   const [ selectDayMode, setSelectDayMode ] = useState(false);
   const [isMonthListOpen, setIsMonthListOpen] = useState(false);
-
-  const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-  ];
 
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   // Calculate days in the month
   const getDaysInMonth = (month, year) => {
-    return new Date(year, month + 1, 0).getDate();
+    return new Date(year, month+1, 0).getDate();
   };
 
   // Generate calendar days based on month and year
@@ -36,7 +33,7 @@ const Calendar = ({date, handleUpdatingTable}) => {
     for (let day = 1; day <= daysInMonth; day++) {
       const isToday =
         day === new Date().getDate() &&
-        currentMonth === new Date().getMonth() &&
+        currentMonth === new Date().getMonth()+1 &&
         currentYear === new Date().getFullYear();
 
       days.push(
@@ -75,7 +72,7 @@ const Calendar = ({date, handleUpdatingTable}) => {
     setSelectDayMode((prevMode) => !prevMode);
 };
 
-  const isFuture = (index) => currentYear === new Date().getFullYear() && index > new Date().getMonth();
+  const isFuture = (index) => currentYear === new Date().getFullYear() && index > new Date().getMonth()+1;
 
   const handleMonthClick = (index) => {
     if (isFuture(index)) return;
@@ -109,13 +106,26 @@ const Calendar = ({date, handleUpdatingTable}) => {
 //     setShowCalendar(false);
 //   }
 
+  const updateTable = () => {
+    setHeaderData((prev) => ({
+      ...prev,
+      date: {
+        month: currentMonth,
+        year: currentYear,
+        day: selectDayMode ? currentDay : -1
+      },
+    }));
+
+    setShowCalendar(false);
+  }
+
   
 
   return (
     <div className={`calendar dark`}>
       <div className="calendar-header">
         <span onClick={() => setIsMonthListOpen((prev) => !prev)} className="month-picker" id="month-picker">
-          {monthNames[currentMonth]}
+          {months[currentMonth-1].name}
         </span>
         <div className="year-picker">
           <span className="year-change" id="prev-year" onClick={goToPrevYear}>
@@ -146,11 +156,7 @@ const Calendar = ({date, handleUpdatingTable}) => {
             </div>
         </div>
         <div>
-            <button onClick={() => handleUpdatingTable({
-                    day: selectDayMode ? currentDay : -1,
-                    month: currentMonth,
-                    year: currentYear
-                })} 
+            <button onClick={() => updateTable()} 
                 className='bg-transparent border border-[#00B2CC] text-[#00B2CC] font-semibold'>
                 Update
             </button>

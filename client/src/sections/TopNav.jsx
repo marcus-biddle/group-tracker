@@ -1,19 +1,38 @@
 import React, { useEffect, useState } from 'react'
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { isAuthenticated } from '../helpers/authHelper';
 import { GiEcology } from "react-icons/gi";
 import { SlidingMenu } from '../components/SlidingMenu';
 import { GoPersonAdd, GoPlus, GoCalendar, GoGraph } from "react-icons/go";
 import { retrieveUsers } from '../api/playersApi';
 import { retrieveExercises } from '../api/exerciseApi';
+import { useHeaderData } from '../context/HeaderDataContext';
+import Calendar from '../components/Calendar';
 
 const subNavGuide = [
-  'Activity', 'Players',
+  'activity', 'log', 'you'
 ]
+
+export const months = [
+  { name: 'January', value: 1 },
+  { name: 'February', value: 2 },
+  { name: 'March', value: 3 },
+  { name: 'April', value: 4 },
+  { name: 'May', value: 5 },
+  { name: 'June', value: 6 },
+  { name: 'July', value: 7 },
+  { name: 'August', value: 8 },
+  { name: 'September', value: 9 },
+  { name: 'October', value: 10 },
+  { name: 'November', value: 11 },
+  { name: 'December', value: 12 },
+];
 
 export const TopNav = () => {
   const [ isOpen, setIsOpen ] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const pathname = location.pathname.split('/')[1] || null;
 
   const goHome = () => navigate("/");
   const logout = () => {
@@ -23,6 +42,13 @@ export const TopNav = () => {
 
   const [ exerciseList, setExerciseList ] = useState([]);
   const [ playerList, setPlayerList ] = useState([]);
+  const { headerData, setHeaderData } = useHeaderData();
+  const [ showCalendar, setShowCalendar ] = useState(false);
+  const [ date, setDate ] = useState({
+    day: -1,
+    month: new Date().getMonth()+1,
+    year: new Date().getFullYear()
+  })
 
     const fetchExercises = async () => {
         try {
@@ -44,10 +70,10 @@ export const TopNav = () => {
       }
     }
 
-    useEffect(() => {
-        fetchExercises();
-        fetchPlayerList();
-    }, []);
+    // useEffect(() => {
+    //     fetchExercises();
+    //     fetchPlayerList();
+    // }, []);
 
   return (
     <>
@@ -58,7 +84,7 @@ export const TopNav = () => {
         </button>
       </div>
       <div className=' flex justify-center items-center'>
-        <span>Date</span>
+        <span className='mx-2'>{months[headerData.date.month-1].name} {headerData.date.day === -1 ? '' : `${headerData.date.day},`} {headerData.date.year}</span>
         <button onClick={() => setShowCalendar(true)} className='text-[#00B2CC] bg-[#322a37] bg-opacity-75'>
           <GoCalendar className='w-full h-full scale-150' />
         </button>
@@ -98,9 +124,13 @@ export const TopNav = () => {
     </div>
     <div className='flex w-full justify-evenly'>
       {subNavGuide.map((category) => (
-        <div key={category} className=' w-full flex items-center justify-evenly py-4 px-8 z-50 text-[#B3B3B3] bg-[#1d1723] shadow-lg'>{category}</div>
+        <NavLink to={`/${category}`} key={category} className={`${category === pathname || pathname === null && category === 'activity' ? 'border-b-2' : ''} w-full capitalize flex items-center justify-evenly py-4 px-8 z-50 text-[#B3B3B3] visited:text-[#B3B3B3] bg-[#1d1723] shadow-lg`}>{category}</NavLink>
       ))}
     </div>
+
+    {showCalendar && <div className=' absolute top-0 h-screen flex justify-center items-center w-full px-6 bg-black bg-opacity-50'>
+        <Calendar setShowCalendar={setShowCalendar} />
+      </div>}
     </>
     
   )

@@ -10,6 +10,7 @@ import { isAuthenticated } from './helpers/authHelper'
 
 import "slick-carousel/slick/slick.css"; 
 import "slick-carousel/slick/slick-theme.css";
+import { HeaderDataProvider } from './context/HeaderDataContext'
 
 function App() {
   const COLOR_PATH_CHART = [
@@ -24,13 +25,14 @@ function App() {
   // console.log(matches[0].params.activityId);
 
   return (
-    <div className={` min-h-screen bg-gradient-to-br from-black via-[#1C1422] to-[#2f2239]`}>
-      <TopNav />
-      <div className=''>
-        <Outlet />
+    <HeaderDataProvider>
+      <div className={` min-h-screen bg-gradient-to-br from-black via-[#1C1422] to-[#2f2239]`}>
+        <TopNav />
+        <div className=''>
+          <Outlet />
+        </div>
       </div>
-      
-    </div>
+    </HeaderDataProvider>
   )
 }
 

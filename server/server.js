@@ -434,7 +434,7 @@ app.delete('/api/records/:recordId', async (req, res) => {
   }
 });
 
-app.post('/api/exercises/add', async (req, res) => {
+app.post('/api/exercises/add', authenticateToken, async (req, res) => {
   const { user_id, exercise_id, exercise_count, date } = req.body;
   console.log(user_id, exercise_id, exercise_count, date );
 

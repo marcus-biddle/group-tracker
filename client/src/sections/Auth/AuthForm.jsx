@@ -44,7 +44,7 @@ export const AuthForm = () => {
   };
 
   return (
-    <div className="bg-secondaryMenu p-6 rounded-md space-y-8 mx-6">
+    <div className="space-y-8 mx-6 mt-8">
       <Header level='h1' color='primaryText'>{isLogin ? 'Login' : 'Create Account'}</Header>
         {newUserCreated && <Text size='medium' color='mutedText'>New user created. Please login.</Text>}
         
@@ -134,7 +134,7 @@ export const AuthForm = () => {
           <div>
             <button
               type="submit"
-              className="w-full bg-primary text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="w-full text-[#00B2CC] border border-[#00B2CC] bg-transparent"
             >
               {isLogin ? 'Sign In' : 'Sign Up'}
             </button>
@@ -144,28 +144,25 @@ export const AuthForm = () => {
         {/* Toggle Form Button */}
         <div className="text-center mt-4">
           {isLogin ? (
-            <Text size='small' color='mutedText'>
+            <span className='text-[#7C7986]'>
               Don't have an account?{' '}
-              <Button
-                size='small'
-                type="button"
+              <button
                 onClick={toggleForm}
+                className='bg-transparent p-0 underline text-[#00B2CC]'
               >
                 Create Account
-              </Button>
-            </Text>
+              </button>
+            </span>
           ) : (
-            <Text size='small' color='mutedText'>
+            <span className='text-[#7C7986]'>
               Already have an account?{' '}
-              <Button
-                size='small'
-                type="button"
+              <button
                 onClick={toggleForm}
-                className="text-indigo-600 hover:underline"
+                className="bg-transparent p-0 underline text-[#00B2CC]"
               >
                 Sign In
-              </Button>
-            </Text>
+              </button>
+            </span>
           )}
         </div>
     </div>

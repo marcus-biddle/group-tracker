@@ -6,11 +6,12 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import './index.css'
-import { Activity } from './sections/Activity/Activity.jsx';
 import { Home } from './sections/Home/Home.jsx';
 import { AuthForm } from './sections/Auth/AuthForm.jsx';
 import LoginPage from './sections/Auth/LoginPage.jsx';
 import ActivityPage from './sections/Activity/ActivityPage.jsx';
+import { LogPage } from './sections/Log/LogPage.jsx';
+import { Import } from './sections/Import/Import.jsx';
 
 const router = createBrowserRouter([
   {
@@ -19,15 +20,19 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <Home />
-      },
-      {
-        path: "activities/:activityId/:activityname",
-        element: <Activity />
-      },
-      {
-        path: "activities/v2/:activityId/:activityname",
         element: <ActivityPage />
+      },
+      {
+        path: "/activity",
+        element: <ActivityPage />
+      },
+      {
+        path: "/log",
+        element: <LogPage />
+      },
+      {
+        path: "/log/import",
+        element: <Import />
       },
       {
         path: "/auth",
