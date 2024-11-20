@@ -77,16 +77,16 @@ export const TopNav = () => {
 
   return (
     <>
-    <div className=' flex items-center justify-between py-4 px-8 z-50 text-[#B3B3B3] bg-[#19141E] shadow-lg'>
+    <div className=' flex items-center justify-between px-2 py-2 z-50 text-[#B3B3B3] bg-[#19141E] shadow-lg'>
       <div className=' flex justify-center items-center'>
-        <button className='bg-transparent' onClick={goHome}>
-          <GiEcology className='w-full h-full text-[#00B2CC] scale-150' />
+        <button className='bg-transparent text-[#00B2CC] h-full w-20' onClick={goHome}>
+          <GiEcology className='w-full h-full scale-90' />
         </button>
       </div>
-      <div className=' flex justify-center items-center gap-8'>
-        <span className='mx-2'>{months[headerData.date.month-1].name} {headerData.date.day === -1 ? '' : `${headerData.date.day},`} {headerData.date.year}</span>
-        <button onClick={() => setShowCalendar(true)} className='text-[#00B2CC] bg-[#322a37] bg-opacity-75'>
-          <GoCalendar className='w-full h-full scale-150' />
+      <div className=' flex justify-center items-center'>
+        <span className='pt-3 text-[#EFEDFD] '>{months[headerData.date.month-1].name} {headerData.date.day === -1 ? '' : `${headerData.date.day},`} {headerData.date.year}</span>
+        <button onClick={() => setShowCalendar(true)} className='text-[#00B2CC] bg-transparent h-full w-20'>
+          <GoCalendar className='w-full h-full scale-90' />
         </button>
       </div>
         
