@@ -161,8 +161,9 @@ app.post('/api/exercises/log', async (req, res) => {
 });
 
 app.post('/api/exercises/log/user', async (req, res) => {
-  const { exercise_id, month, year, day, user_id } = req.body;
-  console.log('Parameters:', { exercise_id, month, year, day, user_id });
+  const { user_id } = req.body;
+  console.log('Parameters:', { user_id });
+
   try {
     const query = `
       SELECT 
@@ -170,30 +171,71 @@ app.post('/api/exercises/log/user', async (req, res) => {
           u.id AS user_id,
           CONCAT(u.firstname, ' ', u.lastname) AS fullname,
           el.exercise_count,
-          el.date
+          el.date,
+          el.exercise_id
       FROM 
           public.exercise_log el
       JOIN 
-          public.users u
-          ON el.user_id = u.id
+          public.users u ON el.user_id = u.id
       WHERE 
-          el.exercise_id = $1
-          AND EXTRACT(MONTH FROM el.date) = $2   
-          AND EXTRACT(YEAR FROM el.date) = $3 
-          AND ($4 = -1 OR EXTRACT(DAY FROM el.date) = $4)
-          AND (u.id = $5)
+          u.id = $1  -- Only filter by user_id
       ORDER BY 
-        el.date DESC;
+          el.date DESC;
     `;
+    
+    const result = await pool.query(query, [user_id]);
+    
+    // Process the result into the desired format
+    const groupedData = result.rows.reduce((acc, { user_id, fullname, date, exercise_id, exercise_count }) => {
+      // Format date to 'YYYY-MM-DD' for consistency
+      const formattedDate = new Date(date).toISOString().split('T')[0];
 
-    // Execute the query
-    const result = await pool.query(query, [exercise_id, month, year, day, user_id]);
-    res.status(200).json(result.rows);
+      // If the user does not exist in the accumulator, add them
+      if (!acc[user_id]) {
+        acc[user_id] = {
+          user_id,
+          fullname,
+          dates: {} // This will store dates as keys
+        };
+      }
+
+      // If the date does not exist for the user, add it
+      if (!acc[user_id].dates[formattedDate]) {
+        acc[user_id].dates[formattedDate] = {
+          date: formattedDate,
+          exercises: [] // Initialize an empty array for exercises on this date
+        };
+      }
+
+      // Add the exercise data to the correct date and user
+      const existingExercise = acc[user_id].dates[formattedDate].exercises.find(exercise => exercise.exercise_id === exercise_id);
+      
+      if (existingExercise) {
+        existingExercise.total_exercise_count += parseInt(exercise_count, 10); // Add to existing exercise count
+      } else {
+        acc[user_id].dates[formattedDate].exercises.push({
+          exercise_id,
+          total_exercise_count: parseInt(exercise_count, 10) // Create a new exercise entry
+        });
+      }
+
+      return acc;
+    }, {});
+
+    // Convert the grouped data into an array and send as response
+    const responseData = Object.values(groupedData).map(user => ({
+      user_id: user.user_id,
+      fullname: user.fullname,
+      dates: Object.values(user.dates)
+    }));
+
+    res.status(200).json(responseData);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to retrieve exercises' });
   }
 });
+
 
 app.post('/api/exercises/log/all', async (req, res) => {
   const { month, year, day } = req.body;

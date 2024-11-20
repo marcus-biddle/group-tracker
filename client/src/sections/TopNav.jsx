@@ -10,7 +10,7 @@ import { useHeaderData } from '../context/HeaderDataContext';
 import Calendar from '../components/Calendar';
 
 const subNavGuide = [
-  'activity', 'log', 'you'
+  'activity', 'log', 'profile'
 ]
 
 export const months = [

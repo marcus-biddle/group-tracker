@@ -12,6 +12,7 @@ import LoginPage from './sections/Auth/LoginPage.jsx';
 import ActivityPage from './sections/Activity/ActivityPage.jsx';
 import { LogPage } from './sections/Log/LogPage.jsx';
 import { Import } from './sections/Import/Import.jsx';
+import { ProfilePage } from './sections/Profile/ProfilePage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage/>
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />
       },
     ]
   },
