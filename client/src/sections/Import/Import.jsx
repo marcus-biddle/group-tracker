@@ -77,8 +77,6 @@ export const Import = () => {
     console.log("Imported Data: ", formattedData);
     // You can further process or save this data to your backend
   };
-
-  console.log(csvData.length)
   
     return (
         <div className="p-6 text-white">
