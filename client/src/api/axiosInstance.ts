@@ -4,7 +4,7 @@ import { getToken, isTokenExpired } from '../helpers/authHelper.ts';
 
 // Create an Axios instance with default configuration
 const axiosInstance = axios.create({
-  baseURL: 'https://group-tracker.onrender.com//api',  // Base API URL
+  baseURL: 'https://group-tracker.onrender.com/api',  // Base API URL
   timeout: 5000, // Timeout for requests (in milliseconds)
   headers: {
     'Content-Type': 'application/json',
