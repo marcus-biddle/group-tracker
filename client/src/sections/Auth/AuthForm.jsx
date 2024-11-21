@@ -134,7 +134,7 @@ export const AuthForm = () => {
           <div>
             <button
               type="submit"
-              className="w-full text-[#00B2CC] border border-[#00B2CC] bg-transparent"
+              className="w-full text-[#00B2CC] border border-[#00B2CC] bg-transparent active:scale-95 active:bg-[#00B2CC] active:text-black transition-transform duration-150"
             >
               {isLogin ? 'Sign In' : 'Sign Up'}
             </button>
@@ -158,7 +158,7 @@ export const AuthForm = () => {
               Already have an account?{' '}
               <button
                 onClick={toggleForm}
-                className="bg-transparent p-0 underline text-[#00B2CC]"
+                className="bg-transparent p-0 underline text-[#00B2CC] active:scale-95 active:bg-[#00B2CC] active:text-black transition-transform duration-150"
               >
                 Sign In
               </button>
