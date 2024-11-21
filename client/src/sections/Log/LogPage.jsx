@@ -46,7 +46,7 @@ export const LogPage = () => {
             id="exercise"
             value={exercise}
             onChange={(e) => setExercise(e.target.value)}
-            className="block min-w-32 px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37]"
+            className="block min-w-32 px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37] caret-transparent"
           >
             <option value={1}>Pushups</option>
             <option value={2}>Pullups</option>
@@ -65,7 +65,7 @@ export const LogPage = () => {
                 setCount(e.target.value ? parseInt(e.target.value, 10) : "")
               }
             min={0}
-            className="block px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37]"
+            className="block px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37] caret-transparent"
             placeholder="Enter the count"
           />
         </div>
@@ -79,7 +79,7 @@ export const LogPage = () => {
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 max={new Date().toISOString().split('T')[0]}
-                className="block px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37]"
+                className="block px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37] caret-transparent"
             />
         </div>
         <button
