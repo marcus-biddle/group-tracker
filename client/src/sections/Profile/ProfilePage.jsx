@@ -142,7 +142,7 @@ export const ProfilePage = () => {
                     id="startDate"
                     value={startDate}
                     onChange={handleStartDateChange}
-                    className="p-2 rounded-md bg-[#322a37] text-[#00B2CC]"
+                    className="p-2 rounded-md bg-[#322a37] text-[#00B2CC] box-border"
                     />
                 </div>
                 <div className="flex flex-col">
@@ -152,7 +152,7 @@ export const ProfilePage = () => {
                     id="endDate"
                     value={endDate}
                     onChange={handleEndDateChange}
-                    className="p-2 rounded-md bg-[#322a37] text-[#00B2CC]"
+                    className="p-2 rounded-md bg-[#322a37] text-[#00B2CC] box-border "
                     />
                 </div>
             </div>
