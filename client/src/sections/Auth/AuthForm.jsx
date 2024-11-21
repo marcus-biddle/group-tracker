@@ -13,6 +13,7 @@ export const AuthForm = () => {
   const [ firstname, setFirstname ] = useState('');
   const [ lastname, setLastname ] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [errMsg, setErrMsg] = useState(null);
   const navigate = useNavigate();
 
   const toggleForm = () => setIsLogin(!isLogin); // Toggle between login and signup
@@ -26,20 +27,26 @@ export const AuthForm = () => {
     if (isLogin) {
       // Handle login logic here
       // console.log('Login:', { email, password });
-      const data = await loginUser(loginPayload);
-      console.log('User logged in: ', data);
-      navigate('/')
+      try {
+        await loginUser(loginPayload);
+        navigate('/')
+      } catch {
+        setErrMsg('Could not complete request. Please try a different password or create an account.')
+      }
+      
     } else {
       if (password !== confirmPassword) {
         alert("Passwords don't match!");
         return;
       }
-      // Handle sign-up logic here
-      // console.log('Sign Up:', { email, password });
-      const data = await registerUser(signUpPayload);
-      console.log('User register: ', data);
-      setIsLogin(true);
-      setNewUserCreated(true);
+      try {
+        await registerUser(signUpPayload);
+        setIsLogin(true);
+        setNewUserCreated(true);
+      } catch {
+        setErrMsg("Could not create an account at this time. Please try again.")
+      }
+      
     }
   };
 
@@ -47,6 +54,7 @@ export const AuthForm = () => {
     <div className="space-y-8 mx-6 mt-8">
       <Header level='h1' color='primaryText'>{isLogin ? 'Login' : 'Create Account'}</Header>
         {newUserCreated && <Text size='medium' color='mutedText'>New user created. Please login.</Text>}
+        <p className=' text-red-800'>{errMsg}</p>
         
         <form onSubmit={handleSubmit} className="space-y-4 text-secondaryText">
           {/* Email Field */}
