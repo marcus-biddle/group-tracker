@@ -79,11 +79,11 @@ const ActivityPage = () => {
             </div>
         </div>
         {exerciseLog.map((person, index) => (
-          <div
+          <motion.div
           key={index}
-          // initial={{ opacity: 0, y: 20 }}
-          // animate={{ opacity: 1, y: 0 }}
-          // transition={{ delay: index * 0.2 }}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: index * 0.2 }}
           // onClick={() => handleRecordClick(person.user_id, person.log_id)}
           className="flex justify-between bg-[#291B34] bg-opacity-85 text-[#918E9D] rounded-md px-4 py-4"
           >
@@ -97,7 +97,7 @@ const ActivityPage = () => {
               ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
