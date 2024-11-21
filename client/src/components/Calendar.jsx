@@ -43,10 +43,12 @@ const Calendar = ({ setShowCalendar }) => {
           onClick={() => handleCalendarDayClick(day)}
         >
           {day}
-          <span></span>
-          <span></span>
-          <span></span>
-          <span></span>
+          {day === currentDay && <>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+          </>}
         </div>
       );
     }
@@ -54,23 +56,21 @@ const Calendar = ({ setShowCalendar }) => {
   };
 
   const handleCalendarDayClick = (day) => {
-    if (selectDayMode) {
-        setCurrentDay(day)
-    }
+    setCurrentDay(prev => prev === day ? -1 : day)
   }
 
   // Toggle dark mode
-  const toggleSelectDayMode = () => {
-    if (!selectDayMode) {
-        setCurrentDay(new Date().getDate());
-    }
+//   const toggleSelectDayMode = () => {
+//     if (!selectDayMode) {
+//         setCurrentDay(new Date().getDate());
+//     }
 
-    if (selectDayMode) {
-        setCurrentDay(-1);
-    }
+//     if (selectDayMode) {
+//         setCurrentDay(-1);
+//     }
 
-    setSelectDayMode((prevMode) => !prevMode);
-};
+//     setSelectDayMode((prevMode) => !prevMode);
+// };
 
   const isFuture = (index) => currentYear === new Date().getFullYear() && index > new Date().getMonth()+1;
 
@@ -112,7 +112,7 @@ const Calendar = ({ setShowCalendar }) => {
       date: {
         month: currentMonth,
         year: currentYear,
-        day: selectDayMode ? currentDay : -1
+        day: currentDay
       },
     }));
 
@@ -138,7 +138,7 @@ const Calendar = ({ setShowCalendar }) => {
         </div>
       </div>
       
-      <div className={`calendar-body ${selectDayMode ? 'show' : ''}`}>
+      <div className={`calendar-body show`}>
         <div className="calendar-week-day">
           {weekDays.map((day) => (
             <div key={day}>{day}</div>
@@ -149,15 +149,15 @@ const Calendar = ({ setShowCalendar }) => {
 
       <div className='space-x-16'>
         <div className="calendar-footer">
-            <div className={`toggle ${selectDayMode ? 'on' : 'off'}`}>
+            {/* <div className={`toggle ${selectDayMode ? 'on' : 'off'}`}>
             <span>Use Days</span>
             <div className="dark-mode-switch" onClick={toggleSelectDayMode}>
                 <div className={`dark-mode-switch-ident ${selectDayMode ? 'dark' : 'light'}`}></div>
             </div>
-        </div>
-        <div>
+        </div> */}
+        <div className='w-full flex justify-end'>
             <button onClick={() => updateTable()} 
-                className='bg-transparent border border-[#00B2CC] text-[#00B2CC] font-semibold'>
+                className='bg-transparent border border-[#00B2CC] text-[#00B2CC] font-semibold active:scale-95 active:bg-[#00B2CC] active:text-black transition-transform duration-150'>
                 Update
             </button>
         </div>

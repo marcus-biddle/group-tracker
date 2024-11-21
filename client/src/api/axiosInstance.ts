@@ -14,23 +14,30 @@ const axiosInstance = axios.create({
 // Adding JWT token to every request (if available)
 axiosInstance.interceptors.request.use(
     (config) => {
-      const token = getToken();
-      if (token && !isTokenExpired()) {
-        config.headers['Authorization'] = `Bearer ${token}`;  // Set the token in headers
-      } else {
-        // Optionally handle token expiration here, like redirecting to login
-        console.log('Token expired or possibly signing in.');
-        // Redirect to login page or notify the user
+      const isAuthRequest = config.url?.includes('/users/login') || config.url?.includes('/users/signup');
+
+      if (!isAuthRequest) {
+        const token = getToken();
+        if (token && !isTokenExpired()) {
+          config.headers['Authorization'] = `Bearer ${token}`;  // Set the token in headers
+        } else {
+          // Optionally handle token expiration here, like redirecting to login
+          console.log('Token expired or possibly signing in.');
+          // Redirect to login page or notify the user
+          window.location.href = '/auth';
+        }
       }
       return config;
+      
     },
     (error) => {
-        if (error.response?.status === 401) {
+      const isAuthRequest = error.url?.includes('/users/login') || error.url?.includes('/users/signup');
+        if (!isAuthRequest && error.response?.status === 401) {
           // Token is expired or invalid
           console.log('Unauthorized - Token might be expired');
           // Optionally remove token and redirect to login page
           localStorage.removeItem('token');
-          window.location.href = '/login';
+          window.location.href = '/auth';
         }
         return Promise.reject(error);
       }

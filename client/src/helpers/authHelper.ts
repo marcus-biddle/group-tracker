@@ -26,6 +26,8 @@ export const isTokenExpired = (): boolean => {
     const currentTime = Math.floor(Date.now() / 1000); // Get current time in seconds
     return decoded.exp < currentTime; // Check if token is expired
   } catch (error) {
+    localStorage.removeItem('user_id');
+    localStorage.removeItem('token');
     return true; // If token can't be decoded, treat it as expired
   }
 };

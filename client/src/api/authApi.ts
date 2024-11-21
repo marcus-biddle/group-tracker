@@ -11,6 +11,7 @@ interface AuthData {
 export const loginUser = async (data: AuthData) => {
   try {
     const response = await axiosInstance.post('/users/login', data);
+    console.log(response)
     // Save JWT token to localStorage
     localStorage.setItem('token', response.data.token);
     localStorage.setItem('user_id', response.data.user.id);

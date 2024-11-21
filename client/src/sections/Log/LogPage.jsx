@@ -84,13 +84,13 @@ export const LogPage = () => {
         </div>
         <button
           onClick={() => handleSave()}
-          className="w-full text-[#00B2CC] border border-[#00B2CC] bg-transparent py-2 px-4 rounded-lg transition"
+          className="w-full text-[#00B2CC] border border-[#00B2CC] bg-transparent py-2 px-4 rounded-lg active:scale-95 active:bg-[#00B2CC] active:text-black transition-transform duration-150"
         >
           Log Count
         </button>
         <button
           onClick={() =>navigate('import')}
-          className="w-full text-[#00B2CC] border border-black bg-black py-2 px-4 rounded-lg transition"
+          className="w-full text-black  bg-[#00B2CC] py-2 px-4 rounded-lg active:scale-95 active:bg-black active:text-[#00B2CC] transition-transform duration-150"
         >
           Import Logs
         </button>

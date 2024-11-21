@@ -160,7 +160,7 @@ app.post('/api/exercises/log', async (req, res) => {
   }
 });
 
-app.post('/api/exercises/log/user', async (req, res) => {
+app.post('/api/exercises/log/user', authenticateToken, async (req, res) => {
   const { user_id } = req.body;
   console.log('Parameters:', { user_id });
 

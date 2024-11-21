@@ -178,9 +178,9 @@
     border-radius: 50%;
 }
 
-.calendar-days div.curr-date span {
+/* .calendar-days div.curr-date span {
     display: none;
-}
+} */
 
 .month-picker {
     padding: 5px 10px;
