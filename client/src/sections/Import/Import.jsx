@@ -117,7 +117,7 @@ export const Import = () => {
                     Columns: <br/>
                     <span className='pl-8'>Date</span> (e.g., 2024-11-15) <br/>
                     <span className='pl-8'>Count</span> (numeric values only) <br/> <br />
-                    Helpful tip: Copy paste the Date column and the column with your name if you're importing from Cal's Spreadsheet.
+                    Helpful tip: Copy paste the Date column and the column under your name if you're importing from Cal's Spreadsheet.
                 </p> <br />
                 <p>3. Save the file as a .csv (Comma-Separated Values) file.</p> <br />
                 <p>4. Exercise Dropdown: Ensure the exercise column is correctly selected before importing your csv file.</p> 

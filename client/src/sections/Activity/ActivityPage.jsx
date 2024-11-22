@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { retrieveAllExerciseLogsGroupedByUser, retrieveExerciseLog } from '../../api/exerciseApi';
 import { MdOutlineLeaderboard } from "react-icons/md";
 import { useHeaderData } from '../../context/HeaderDataContext';
@@ -45,7 +45,7 @@ const ActivityPage = () => {
                 <span className=' text-[14px]'>Order By Exercise:</span>
                 <button
                   onClick={toggleDropdown}
-                  className="inline-flex justify-between items-center text-center w-32 h-8 px-4 py-2 text-sm font-medium text-[#00B2CC] bg-[#322a37] bg-opacity-75 rounded-md"
+                  className="inline-flex justify-between items-center text-center gap-4 min-w-36 text-[#00B2CC] bg-[#322a37] bg-opacity-75 rounded-lg bordee border-[#322a37]  active:scale-95 transition-transform duration-150"
                 >
                   <div>
                     <MdOutlineLeaderboard className=' h-full scale-125' />
@@ -53,32 +53,80 @@ const ActivityPage = () => {
                   <div className='w-full capitalize'>{dropdownSelection === null ? 'None' : dropdownSelection}</div>
                 </button>
 
-                  {isOpen && (
-                    <div className="absolute z-10 mt-2 w-28 origin-top-right rounded-md shadow-lg">
-                      <ul className="py-1 text-[#00B2CC] bg-[#322a37]" role="menu" aria-orientation="vertical" aria-labelledby="menu-button">
+                {isOpen && (
+                  <AnimatePresence>
+                    <motion.div
+                      initial={{ opacity: 0, y: -20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -20 }}
+                      transition={{ duration: 0.25 }}
+                      className="absolute z-10 mt-2 w-36 origin-top-right rounded-lg shadow-lg"
+                    >
+                      <ul
+                        className="py-1 text-[#00B2CC] bg-[#322a37] rounded-lg"
+                        role="menu"
+                        aria-orientation="vertical"
+                        aria-labelledby="menu-button"
+                      >
                         {exerciseList.map((exercise, index) => (
-                          <li key={index} onClick={() => handleExerciseDropdown(exercise)} className="block capitalize font-semibold px-4 py-2 text-sm ">
-                              {exercise}
+                          <li
+                            key={index}
+                            onClick={() => handleExerciseDropdown(exercise)}
+                            className="block capitalize font-semibold px-4 py-2 hover:bg-[#444]"
+                          >
+                            {exercise}
                           </li>
                         ))}
-                        <li onClick={() => handleExerciseDropdown(null)} className="block capitalize font-semibold px-4 py-2 text-sm ">
-                              None
-                          </li>
+                        <li
+                          onClick={() => handleExerciseDropdown(null)}
+                          className="block capitalize font-semibold px-4 py-2 hover:bg-[#444]"
+                        >
+                          None
+                        </li>
                       </ul>
-                    </div>
-                  )}
+                    </motion.div>
+                  </AnimatePresence>
+                )}
+
                 </div>
               </div>
-              <div className='flex justify-evenly gap-8'>
+              {/* <div className='flex justify-evenly gap-8'>
               {exerciseList.map((exercise, index) => (
                 <div key={index} className='w-10 text-right text-[14px] capitalize'>
                   {exercise}
                 </div>
               ))}
-              </div>
+              </div> */}
             </div>
         </div>
-        {exerciseLog.map((person, index) => (
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {exerciseLog.map((person, index) => (
+            <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.2 }}
+              className="text-white items-center align-middle text-center bg-[#1E1E1E] rounded-md p-4"
+            >
+              <p className="font-semibold text-[#00B2CC] text-left px-2">{person.fullname}</p>
+              <hr className="border-gray-300 m-2 opacity-40" />
+              <div className="flex justify-evenly flex-wrap mt-2">
+                {person.exercises.map((exercise, exerciseIndex) => (
+                  <div 
+                    key={exerciseIndex} 
+                    className="p-2 rounded-md m-1 text-sm "
+                  >
+                    <span className=' text-[32px]'>{exercise.total_exercise_count}</span> 
+                    <span className=' opacity-50'>{' '}{exercise.exercise_name}</span>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        
+        {/* {exerciseLog.map((person, index) => (
           <motion.div
           key={index}
           initial={{ opacity: 0, y: 20 }}
@@ -98,7 +146,7 @@ const ActivityPage = () => {
               </div>
             </div>
           </motion.div>
-        ))}
+        ))} */}
       </div>
     </div>
   );
