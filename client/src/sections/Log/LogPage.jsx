@@ -34,42 +34,43 @@ export const LogPage = () => {
 
   return (
     <>
-    <div className="min-h-[550px] flex flex-col justify-evenly items-center py-8 px-6 z-10">
-        <h1 className="text-2xl font-bold text-[#C1BFCD] text-left w-full">
+    <div className=" flex flex-col gap-2 px-8 py-12 text-[#efedfdaa]">
+        {/* <h1 className="text-2xl font-bold text-[#C1BFCD] text-left w-full">
           Log Exercise Count
-        </h1>
-        <div className="relative bg-[#120D18] shadow-md w-full p-4 rounded-md text-[#7C7986] bg-opacity-75">
-          <label htmlFor="exercise" className="block font-medium mb-2">
-            Select Exercise
-          </label>
-          <select
-            id="exercise"
-            value={exercise}
-            onChange={(e) => setExercise(e.target.value)}
-            className="block min-w-32 px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37] caret-transparent"
-          >
-            <option value={1}>Pushups</option>
-            <option value={2}>Pullups</option>
-            <option value={3}>Running</option>
-          </select>
-        </div>
-        <div className="relative bg-[#120D18] shadow-md w-full p-4 rounded-md text-[#7C7986] bg-opacity-75">
-          <label htmlFor="count" className="block font-medium mb-2">
-            Enter Count
-          </label>
-          <input
-            id="count"
-            type="number"
-            value={count}
-            onChange={(e) =>
-                setCount(e.target.value ? parseInt(e.target.value, 10) : "")
-              }
-            min={0}
-            className="block px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37] caret-transparent"
-            placeholder="Enter the count"
-          />
-        </div>
-        <div className="relative bg-[#120D18] shadow-md w-full p-4 rounded-md text-[#7C7986] bg-opacity-75">
+        </h1> */}
+          <div className=''>
+            <label htmlFor="exercise" className="block font-medium mb-2">
+              Select Exercise
+            </label>
+            <select
+              id="exercise"
+              value={exercise}
+              onChange={(e) => setExercise(e.target.value)}
+              className="block w-full px-4 py-2 rounded-md text-[#00B2CC] bg-[#1E1B22] caret-transparent"
+            >
+              <option value={1}>Pushups</option>
+              <option value={2}>Pullups</option>
+              <option value={3}>Running</option>
+            </select>
+          </div>
+          <div>
+            <label htmlFor="count" className="block font-medium mb-2">
+              Enter Count
+            </label>
+            <input
+              id="count"
+              type="number"
+              value={count}
+              onChange={(e) =>
+                  setCount(e.target.value ? parseInt(e.target.value, 10) : "")
+                }
+              min={0}
+              className="block w-full px-4 py-2 rounded-md text-[#00B2CC] bg-[#1E1B22] caret-transparent"
+              placeholder="Enter count"
+            />
+          </div>
+        
+        <div className=''>
             <label htmlFor="date" className="block font-medium mb-2">
                 Enter Date
             </label>
@@ -79,21 +80,25 @@ export const LogPage = () => {
                 value={selectedDate}
                 onChange={(e) => setSelectedDate(e.target.value)}
                 max={new Date().toISOString().split('T')[0]}
-                className="block px-4 py-2 rounded-md text-[#00B2CC] bg-[#322a37] caret-transparent"
+                className="block w-full px-4 py-2 rounded-md text-[#00B2CC] bg-[#1E1B22] caret-transparent"
             />
         </div>
-        <button
-          onClick={() => handleSave()}
-          className="w-full text-[#00B2CC] border border-[#00B2CC] bg-transparent py-2 px-4 rounded-lg active:scale-95 active:bg-[#00B2CC] active:text-black transition-transform duration-150"
-        >
-          Log Count
-        </button>
-        <button
-          onClick={() =>navigate('import')}
-          className="w-full text-black  bg-[#00B2CC] py-2 px-4 rounded-lg active:scale-95 active:bg-black active:text-[#00B2CC] transition-transform duration-150"
-        >
-          Import Logs
-        </button>
+    </div>
+    <div className="flex gap-4 w-full max-w-4xl mx-auto px-4">
+    <button
+        onClick={() => navigate('import')}
+        className="w-[30%] text-black bg-[#00B2CC] py-2 px-4 rounded-lg active:scale-95 active:bg-black active:text-[#00B2CC] hover:bg-black hover:text-[#00B2CC] shadow-md transition-transform duration-150"
+      >
+        Import
+      </button>
+      <button
+        onClick={() => handleSave()}
+        className="flex-1 text-[#00B2CC] border border-[#00B2CC] bg-transparent py-2 px-4 rounded-lg active:scale-95 active:bg-[#00B2CC] active:text-black hover:bg-[#00B2CC] hover:text-black transition-transform duration-150"
+      >
+        Add
+      </button>
+
+      
     </div>
 
     {cautionModal && <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center">

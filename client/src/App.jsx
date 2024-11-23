@@ -26,7 +26,7 @@ function App() {
 
   return (
     <HeaderDataProvider>
-      <div className={` min-h-screen bg-gradient-to-br from-black via-[#1C1422] to-[#2f2239]`}>
+      <div className={` min-h-screen bg-gradient-to-b from-[#111111] via-[#111111] to-[#2f2239]`}>
         <TopNav />
         <div className=''>
           <Outlet />

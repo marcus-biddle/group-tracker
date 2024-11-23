@@ -77,7 +77,7 @@ export const TopNav = () => {
 
   return (
     <>
-      <div className=' flex flex-col bg-[#111111] rounded-b-2xl shadow-lg'>
+      <div className=' flex flex-col bg-[#1A1A1A] rounded-b-2xl shadow-lg'>
         <div className='flex justify-between py-2'>
           <div className=''>
             <button className='bg-transparent text-[#00B2CC] h-full w-20 active:scale-90 transition-transform duration-150' onClick={goHome}>

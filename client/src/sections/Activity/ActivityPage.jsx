@@ -106,7 +106,7 @@ const ActivityPage = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.2 }}
-              className="text-white items-center align-middle text-center bg-[#1E1E1E] rounded-md p-4"
+              className="text-white items-center align-middle text-center bg-[#1E1B22] border border-[#24303E] rounded-md p-4 shadow-lg"
             >
               <p className="font-semibold text-[#00B2CC] text-left px-2">{person.fullname}</p>
               <hr className="border-gray-300 m-2 opacity-40" />
