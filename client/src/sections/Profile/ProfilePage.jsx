@@ -132,6 +132,13 @@ export const ProfilePage = () => {
                 <p>Total Count:</p> 
             </div>
         </div> */}
+        <div className='relative text-white bg-[#322a37] min-h-[150px] rounded-md pl-24'>
+          <div className='absolute top-[-11px] left-[-11px] bg-[#111111] h-20 w-20 rounded-full z-10'></div>
+          <div className='absolute top-[-11px] left-[-11px] bg-white h-20 w-20 rounded-full z-10 scale-75 items-center text-black flex justify-center text-2xl'>
+            MB
+          </div>
+          test
+        </div>
         <div>
             <h3 className='text-white text-[18px]'>Your Entries</h3>
             <div className="flex items-center space-x-4 bg-[#120D18] p-4 rounded-md shadow-md">

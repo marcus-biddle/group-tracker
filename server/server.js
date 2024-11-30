@@ -331,6 +331,44 @@ app.get('/api/players', async (req, res) => {
   }
 });
 
+app.get('/api/user/info', async (req, res) => {
+  const { user_id } = req.body; // Assuming user_id is a UUID
+
+  try {
+    // Query to calculate the total count for each exercise
+    const query = `
+      SELECT 
+        et.exercise_name,
+        SUM(e.exercise_count) AS total_count
+      FROM exercise_log e
+      INNER JOIN exercise_types et
+        ON e.exercise_id = et.exercise_id
+      WHERE e.user_id = $1
+      GROUP BY et.exercise_name;
+    `;
+
+    // Execute the query
+    const result = await pool.query(query, [user_id]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ message: 'No exercise data found for this user' });
+    }
+
+    // Structure the response
+    const exercises = result.rows.map(row => ({
+      exercise_name: row.exercise_name,
+      total_count: parseInt(row.total_count, 10)
+    }));
+
+    return res.json({ exercises });
+
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 app.post('/api/streak/update', authenticateToken, async (req, res) => {
   const { exercise_id } = req.body;
   const user_id = req.user.userId; // Assuming the user ID is available in the request after authentication
