@@ -28,6 +28,10 @@ const ActivityPage = () => {
         day: headerData.date.day
       }, dropdownSelection);
       console.log('FIRST fetching log: ', data);
+      if (data.length <= 0) {
+        setExerciseLog(null);
+        return;
+      }
       setExerciseLog(data);
   }
 
@@ -125,7 +129,7 @@ const ActivityPage = () => {
             </motion.div>
           ))}
         </div>
-        {exerciseLog.length < 1 && <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 text-white items-center align-middle text-center">
+        {exerciseLog === null && <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 text-white items-center align-middle text-center">
           <span>
             No records shown for {months[headerData.date.month-1].name} {headerData.date.day === -1 ? '' : `${headerData.date.day},`} {headerData.date.year}
           <br /> please try a new date on the <span className='text-[#00B2CC]' onClick={() => null}>calendar</span>

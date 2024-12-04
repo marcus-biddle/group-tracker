@@ -148,7 +148,9 @@ export const ProfilePage = () => {
           <div className='absolute top-[-11px] left-[-11px] bg-white h-20 w-20 rounded-full z-10 scale-75 items-center text-black flex justify-center text-2xl'>
             MB
           </div>
-          test
+          <div>
+            
+          </div>
         </div>
         <div>
             <h3 className='text-white text-[18px]'>Your Entries</h3>
