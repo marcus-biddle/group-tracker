@@ -335,11 +335,16 @@ app.get('/api/user/info', async (req, res) => {
   const { user_id } = req.body; // Assuming user_id is a UUID
 
   try {
-    // Query to calculate the total count for each exercise
+    // Query to calculate the total count, log count, and additional stats for each exercise
     const query = `
       SELECT 
         et.exercise_name,
-        SUM(e.exercise_count) AS total_count
+        SUM(e.exercise_count) AS total_count,
+        COUNT(e.id) AS log_count,
+        COUNT(DISTINCT DATE(e.date)) AS days_logged,
+        MAX(e.date) AS last_log_date,
+        MIN(e.date) AS first_log_date,
+        ARRAY_AGG(DATE(e.date) ORDER BY DATE(e.date)) AS log_dates
       FROM exercise_log e
       INNER JOIN exercise_types et
         ON e.exercise_id = et.exercise_id
@@ -347,18 +352,45 @@ app.get('/api/user/info', async (req, res) => {
       GROUP BY et.exercise_name;
     `;
 
-    // Execute the query
     const result = await pool.query(query, [user_id]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ message: 'No exercise data found for this user' });
     }
 
-    // Structure the response
-    const exercises = result.rows.map(row => ({
-      exercise_name: row.exercise_name,
-      total_count: parseInt(row.total_count, 10)
-    }));
+    // Process each exercise to calculate streaks
+    const exercises = result.rows.map(row => {
+      // Extract log dates as an array of JavaScript Date objects
+      const logDates = row.log_dates.map(date => new Date(date));
+
+      // Calculate streaks
+      let longestStreak = 0;
+      let currentStreak = 1;
+
+      for (let i = 1; i < logDates.length; i++) {
+        const diffInDays = (logDates[i] - logDates[i - 1]) / (1000 * 3600 * 24);
+
+        if (diffInDays === 1) {
+          currentStreak++;
+        } else {
+          longestStreak = Math.max(longestStreak, currentStreak);
+          currentStreak = 1;
+        }
+      }
+
+      // Final streak comparison
+      longestStreak = Math.max(longestStreak, currentStreak);
+
+      return {
+        exercise_name: row.exercise_name,
+        total_count: parseInt(row.total_count, 10),
+        log_count: parseInt(row.log_count, 10),
+        days_logged: parseInt(row.days_logged, 10),
+        first_log_date: row.first_log_date,
+        last_log_date: row.last_log_date,
+        longest_streak: longestStreak
+      };
+    });
 
     return res.json({ exercises });
 
@@ -367,6 +399,9 @@ app.get('/api/user/info', async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 });
+
+
+
 
 
 app.post('/api/streak/update', authenticateToken, async (req, res) => {

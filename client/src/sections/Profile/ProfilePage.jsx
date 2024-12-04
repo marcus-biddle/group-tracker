@@ -4,6 +4,7 @@ import { getUserId } from '../../helpers/authHelper';
 import { BsThreeDotsVertical } from "react-icons/bs";
 import {motion} from 'framer-motion'
 import { useNavigate } from 'react-router';
+import { retrieveUserInfo } from '../../api/playersApi';
 
 const userId = getUserId();
 
@@ -104,6 +105,13 @@ export const ProfilePage = () => {
     setEntryDate(date)
     openEntryModal(true);
   }
+
+  const fetchUserInfoDate = async () => {
+    const data = await retrieveUserInfo({user_id: userId});
+    setUserInfor(data);
+    console.log('userInfodata',data)
+
+  }
     
 
     const fetchUserData = async () => {
@@ -120,6 +128,7 @@ export const ProfilePage = () => {
 
     useEffect(() => {
         fetchUserData();
+        fetchUserInfoDate();
     }, [endDate, startDate]);
     
   return (

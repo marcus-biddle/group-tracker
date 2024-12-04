@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { retrieveAllExerciseLogsGroupedByUser, retrieveExerciseLog } from '../../api/exerciseApi';
 import { MdOutlineLeaderboard } from "react-icons/md";
 import { useHeaderData } from '../../context/HeaderDataContext';
+import { months } from '../TopNav';
 
 const exerciseList = ['pushups', 'pullups', 'running'];
 const ActivityPage = () => {
@@ -124,7 +125,12 @@ const ActivityPage = () => {
             </motion.div>
           ))}
         </div>
-
+        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 text-white items-center align-middle text-center">
+          <span>
+            No records shown for {months[headerData.date.month-1].name} {headerData.date.day === -1 ? '' : `${headerData.date.day},`} {headerData.date.year}
+          <br /> please try a new date on the <span className='text-[#00B2CC]' onClick={() => null}>calendar</span>
+          </span>
+        </div>
         
         {/* {exerciseLog.map((person, index) => (
           <motion.div
