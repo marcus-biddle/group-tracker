@@ -37,9 +37,9 @@ const ActivityPage = () => {
 
   return (
     <div className="my-8">
-      <div className='space-y-4 mx-2'>
-        <div className="flex justify-between bg-transparent text-[#7C7986] rounded-md px-4 ">
-          <div className=' flex justify-between w-full align-baseline items-baseline'>
+      <div className='space-y-4 mx-4'>
+        <div className="flex justify-end text-[#7C7986]">
+          <div className=' flex align-baseline justify-items-end'>
             <div className='w-36 flex-wrap'>
               {/* DROPDOWN BUTTON FOR EXERCISE LEADERBOARD */}
               <div className="relative inline-block text-left">
@@ -125,12 +125,12 @@ const ActivityPage = () => {
             </motion.div>
           ))}
         </div>
-        <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 text-white items-center align-middle text-center">
+        {exerciseLog.length < 1 && <div className="grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 text-white items-center align-middle text-center">
           <span>
             No records shown for {months[headerData.date.month-1].name} {headerData.date.day === -1 ? '' : `${headerData.date.day},`} {headerData.date.year}
           <br /> please try a new date on the <span className='text-[#00B2CC]' onClick={() => null}>calendar</span>
           </span>
-        </div>
+        </div>}
         
         {/* {exerciseLog.map((person, index) => (
           <motion.div
