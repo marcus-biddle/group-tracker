@@ -41,6 +41,8 @@ export const ProfilePage = () => {
       const [entryDate, setEntryDate] = useState("");
       const [entryCount, setEntryCount] = useState('');
 
+      const [userInfoData, setUserInfoData] = useState([]);
+
       const navigate = useNavigate();
 
     
@@ -108,7 +110,7 @@ export const ProfilePage = () => {
 
   const fetchUserInfoDate = async () => {
     const data = await retrieveUserInfo({user_id: userId});
-    setUserInfor(data);
+    setUserInfoData(data);
     console.log('userInfodata',data)
 
   }

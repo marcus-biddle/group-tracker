@@ -331,7 +331,7 @@ app.get('/api/players', async (req, res) => {
   }
 });
 
-app.post('/api/user/info', async (req, res) => {
+app.post('/api/user/info', authenticateToken, async (req, res) => {
   const { user_id } = req.body; // Assuming user_id is a UUID
 
   try {
