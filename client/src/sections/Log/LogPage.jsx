@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { addExercise } from '../../api/exerciseApi';
 import { getUserId } from '../../helpers/authHelper';
 import { useNavigate } from 'react-router';
+import { motion, useMotionValue, animate } from 'framer-motion'
 
 export const LogPage = () => {
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
-    const [count, setCount] = useState("");
+    const [count, setCount] = useState(1);
     const [exercise, setExercise] = useState(1);
     const [cautionModal, openCautionModal] = useState(false);
+    // const [value, setValue] = useState(1);
     const navigate = useNavigate();
 
     const handleSave = async () => {
         console.log(exercise, count, selectedDate)
         if (!exercise || count === '' || count < 0) {
-            setCount('');
+          setCount(1);
           setSelectedDate('');
           alert('Please fill in all fields with valid data.');
           
@@ -22,7 +24,7 @@ export const LogPage = () => {
     
         try {
             await addExercise({ exercise_count: count, date: selectedDate, user_id: getUserId(), exercise_id: exercise });
-            setCount('');
+            setCount(1);
             setSelectedDate('');
             alert('Exercise count logged successfully!');
         } catch {
@@ -54,10 +56,10 @@ export const LogPage = () => {
             </select>
           </div>
           <div>
-            <label htmlFor="count" className="block font-medium mb-2">
-              Enter Count
-            </label>
-            <input
+            
+
+
+            {/* <input
               id="count"
               type="number"
               value={count}
@@ -67,7 +69,7 @@ export const LogPage = () => {
               min={0}
               className="block w-full px-4 py-2 rounded-md text-[#00B2CC] bg-[#1E1B22] caret-transparent"
               placeholder="Enter count"
-            />
+            /> */}
           </div>
         
         <div className=''>
@@ -83,7 +85,36 @@ export const LogPage = () => {
                 className="block w-full px-4 py-2 rounded-md text-[#00B2CC] bg-[#1E1B22] caret-transparent"
             />
         </div>
+
+        <label htmlFor="count" className="block font-medium mb-2">
+              How many Reps Did You Perform?
+            </label>
+            <div style={{ position: 'relative', display: 'inline-block', width: '100%' }}>
+              <motion.input
+                type="range"
+                name="range"
+                min="1"
+                max="1000"
+                value={count}
+                onChange={(e) => setCount(Number(e.target.value))}
+                style={{ cursor: 'pointer', width: '100%',  }}
+              />
+              <motion.div
+                style={{
+                  fontSize: "2rem",
+                  fontWeight: "bold",
+                  
+                }}
+              >
+                {count.toFixed(0)}
+              </motion.div>
+            </div>
     </div>
+
+
+
+
+    
     <div className="flex gap-4 w-full max-w-4xl mx-auto px-4">
     <button
         onClick={() => navigate('import')}

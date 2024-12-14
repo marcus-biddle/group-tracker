@@ -8,6 +8,32 @@ import { retrieveUserInfo } from '../../api/playersApi';
 
 const userId = getUserId();
 
+function daysSince(dateString) {
+  const givenDate = new Date(dateString); // Parse the input date
+  const currentDate = new Date(); // Get the current date
+  
+  // Calculate the difference in milliseconds
+  const diffInMilliseconds = currentDate - givenDate;
+  
+  // Convert milliseconds to days
+  const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
+
+  return diffInDays;
+}
+
+function getInitials(fullName) {
+  if (!fullName) return '';
+
+  // Split the name into parts by spaces
+  const nameParts = fullName.trim().split(' ');
+
+  // Map over each part and take the first character, then join them as uppercase
+  const initials = nameParts.map(part => part.charAt(0).toUpperCase()).join('');
+
+  return initials;
+}
+
+
 export const ProfilePage = () => {
     const getToday = () => {
         const today = new Date();
@@ -41,51 +67,11 @@ export const ProfilePage = () => {
       const [entryDate, setEntryDate] = useState("");
       const [entryCount, setEntryCount] = useState('');
 
-      const [userInfoData, setUserInfoData] = useState([]);
+      const [userInfoData, setUserInfoData] = useState({});
 
-      const navigate = useNavigate();
-
+      
     
-      const handleSave = async() => {
-        try {
-            await updateExercise({
-                log_id: activeEntry.exercises.log_id, 
-                date: entryDate, 
-                exercise_count: entryCount
-              })
-              fetchUserData();
-              openEntryModal(false);
-        } catch {
-            navigate('/auth')
-        }
-        
-      };
-
-      console.log(userData)
-    
-      const handleDelete = async() => {
-        try {
-            deleteRecord(activeEntry.exercises.log_id)
-            setUserData((prevUserData) => {
-                return prevUserData.map((entry) => {
-                  if (entry.date === activeEntry.date) {
-                    // Filter out the exercise with the log_id from the exercises array
-                    return {
-                      ...entry,
-                      exercises: entry.exercises.filter(
-                        (exercise) => exercise.log_id !== activeEntry.exercises.log_id
-                      ),
-                    };
-                  }
-                  return entry;
-                });
-              });
-            openEntryModal(false);
-        } catch {
-            navigate('/auth')
-        }
-        
-      };
+      
 
   const handleStartDateChange = (e) => {
     const newStartDate = e.target.value;
@@ -97,16 +83,7 @@ export const ProfilePage = () => {
     setEndDate(newEndDate);
   };
 
-  const handleEntry = (date, item) => {
-    console.log(item);
-    setActiveEntry({
-        date: date,
-        exercises: item
-    })
-    setEntryCount(item.total_exercise_count);
-    setEntryDate(date)
-    openEntryModal(true);
-  }
+  
 
   const fetchUserInfoDate = async () => {
     const data = await retrieveUserInfo({user_id: userId});
@@ -116,22 +93,14 @@ export const ProfilePage = () => {
   }
     
 
-    const fetchUserData = async () => {
-        const data = await retrieveExerciseLogByUser({user_id: userId});
-
-        const filteredData = data[0].dates.filter(item => {
-            const logDate = new Date(item.date);  
-            return logDate >= new Date(startDate) && logDate <= new Date(endDate);
-        });
-
-        setUserData(filteredData);
-        console.log(filteredData);
-    }
+    
 
     useEffect(() => {
-        fetchUserData();
+        // fetchUserData();
         fetchUserInfoDate();
     }, [endDate, startDate]);
+
+    console.log(userInfoData)
     
   return (
     <div className='relative p-8 flex flex-col gap-y-8'>
@@ -145,12 +114,29 @@ export const ProfilePage = () => {
         </div> */}
         <div className='relative text-white bg-[#322a37] min-h-[150px] rounded-md pl-24'>
           <div className='absolute top-[-11px] left-[-11px] bg-[#111111] h-20 w-20 rounded-full z-10'></div>
-          <div className='absolute top-[-11px] left-[-11px] bg-white h-20 w-20 rounded-full z-10 scale-75 items-center text-black flex justify-center text-2xl'>
-            MB
-          </div>
-          <div>
-            
-          </div>
+          {Object.keys(userInfoData).length > 0 && <div className='absolute top-[-11px] left-[-11px] bg-transparent border-4 border-[#00B2CC] text-[#00B2CC] h-20 w-20 rounded-full z-10 scale-75 items-center flex justify-center text-2xl'>
+            {getInitials(userInfoData.fullname)}
+          </div>}
+          {Object.keys(userInfoData).length > 0  && <div className='mr-4'>
+            <div className='flex items-center justify-between my-2'>
+              <p className=' uppercase py-2'>{userInfoData.exercises[0].exercise_name}</p>
+              <p className=''>{userInfoData.exercises[0].total_count}</p>
+            </div>
+            <hr className="border-gray-300 opacity-40 mb-4" />
+            {/* <div className='flex flex-row capitalize justify-between items-baseline w-[80%] '>
+              <p>{userInfoData.exercises[0].exercise_name} Count</p>
+              <p className='text-[2rem] p-0 m-0'>{userInfoData.exercises[0].total_count}</p>
+            </div> */}
+            <div className='flex items-center justify-between mb-2'>
+              <span>Last Entry:</span>
+              <span>{daysSince(userInfoData.exercises[0].last_log_date) === 0 ? 'Today' : daysSince(userInfoData.exercises[0].last_log_date) === 1 ? `${daysSince(userInfoData.exercises[0].last_log_date)} day ago` : `${daysSince(userInfoData.exercises[0].last_log_date)} days ago`}</span>
+            </div>
+            <div className='flex items-center justify-between'>
+              <span>Elapsed Time:</span>
+              <span>{userInfoData.exercises[0].days_logged} days</span>
+            </div>
+            <p></p>
+          </div>}
         </div>
         <div>
             <h3 className='text-white text-[18px]'>Your Entries</h3>
@@ -176,84 +162,9 @@ export const ProfilePage = () => {
                     />
                 </div>
             </div>
-            {userData.map((entry, index) => (
-                <div key={index} className='my-4'>
-                    <div className='text-[#00B2CC]'>{entry.date}</div>
-                    <div className='flex flex-col gap-4 text-[#C1BFCD]'>
-                        {entry.exercises.map((item, index) => (
-                            <button onClick={() => handleEntry(entry.date, item)} key={index} className='flex text-center capitalize justify-between bg-[#322a37] bg-opacity-90 rounded-md shadow-lg p-4'>
-                                <p>{item.exercise_name}</p>
-                                <div className='flex text-center items-center gap-6'>
-                                    <p>{item.total_exercise_count}</p>
-                                    <BsThreeDotsVertical className=' h-6 w-6' />
-                                </div>
-                            </button>
-                        ))}
-                    </div>
-                </div>
-            ))}
+            
         </div>
-        <>
-        {entryModal && (
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
-            exit={{ opacity: 0 }} 
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
-          >
-            <motion.div 
-              initial={{ scale: 0.8 }} 
-              animate={{ scale: 1 }} 
-              exit={{ scale: 0.8 }} 
-              className="bg-[#19121D] text-[#CFCDDD] p-6 rounded-lg shadow-lg w-full max-w-md"
-            >
-              <h2 className="text-2xl font-semibold mb-4">Edit Record</h2>
-  
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-semibold">Date</label>
-                <input
-                  type="date"
-                  value={entryDate}
-                  max={new Date().toISOString().split("T")[0]}
-                  onChange={(e) => setEntryDate(e.target.value)}
-                  className="w-full p-2 rounded-md bg-[#322a37] border border-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-  
-              <div className="mb-4">
-                <label className="block mb-2 text-sm font-semibold">Count</label>
-                <input
-                  type="number"
-                  value={entryCount}
-                  onChange={(e) => setEntryCount(e.target.value)}
-                  className="w-full p-2 rounded-md bg-[#322a37] border border-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                />
-              </div>
-  
-              <div className="flex justify-end space-x-4">
-                <button 
-                    onClick={handleDelete} 
-                    className="px-4 py-2 rounded-md bg-red-600 hover:bg-red-500 transition text-white"
-                  >
-                  Delete
-                </button>
-                <button 
-                  onClick={() => openEntryModal(false)} 
-                  className="px-4 py-2 rounded-md bg-gray-600 hover:bg-gray-500 transition text-white"
-                >
-                  Cancel
-                </button>
-                <button 
-                  onClick={handleSave} 
-                  className="px-4 py-2 rounded-md bg-indigo-600 hover:bg-indigo-500 transition text-white"
-                >
-                  Save
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </>
+        
     </div>
   )
 }
