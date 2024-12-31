@@ -4,7 +4,6 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { TfiControlPlay } from "react-icons/tfi";
 import Text from '../../components/Text';
 import Header from '../../components/Header';
-import Slider from "react-slick";
 import { motion, useAnimation } from 'framer-motion';
 import { FaArrowRight } from "react-icons/fa";
 import { FaTimes } from 'react-icons/fa';

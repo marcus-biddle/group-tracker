@@ -8,9 +8,6 @@ import { IntroList } from './sections/Home/IntroList'
 import { Outlet, useLocation, useMatches } from 'react-router'
 import { isAuthenticated } from './helpers/authHelper'
 
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
-
 
 function App() {
   
