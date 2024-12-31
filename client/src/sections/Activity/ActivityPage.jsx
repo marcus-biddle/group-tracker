@@ -12,6 +12,7 @@ import './Activity.css'
 import { Leaderboard } from '../../components/Leaderboard';
 import { UpdateLeaderboard } from '../../components/UpdateLeaderboard';
 import supabase from '../../api/supabase';
+import { UpdateModalButton } from '../../components/UpdateModalButton';
 
 const userId = getUserId();
 
@@ -141,7 +142,8 @@ const ActivityPage = () => {
 
   return (
     <div className="my-8">
-      <div className=' relative flex justify-center items-center mb-6'>
+      <UpdateModalButton />
+      {/* <div className=' relative flex justify-center items-center mb-6'>
         <div
           className="flex gap-6 items-center px-6 py-4 bg-black text-black rounded-md shadow-lg cursor-pointer"
           onClick={toggleSwitch}
@@ -153,8 +155,6 @@ const ActivityPage = () => {
           >
             Leaderboard
           </div>
-
-          {/* Right Label: Yours */}
           <div
             className={` ${
               isAll ? 'text-white opacity-25' : 'text-[#00B2CC] tracking-wide uppercase font-semibold'
@@ -171,11 +171,10 @@ const ActivityPage = () => {
               damping: 40, // Smooth end
             }}
           />
-    </div>
+    </div> */}
     
-      </div>
 
-      <div className='w-full text-center'>
+      {/* <div className='w-full text-center'>
         <motion.div
         initial={{ scale: 0 }} 
         animate={{ scale: 1 }} 
@@ -185,7 +184,7 @@ const ActivityPage = () => {
         }}>
           <h1 className=' font-bold'>December</h1>
         </motion.div>
-      </div>
+      </div> */}
       
       {/* <div className='space-y-4 m-4'>
         <div className="flex justify-between items-end  text-[#7C7986]">
@@ -268,7 +267,7 @@ const ActivityPage = () => {
         </div>
       </div> */}
 
-      <UpdateLeaderboard />
+      {/* <UpdateLeaderboard /> */}
 
       <Leaderboard />
 
