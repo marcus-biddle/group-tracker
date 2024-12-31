@@ -12,6 +12,7 @@ import ActivityPage from './sections/Activity/ActivityPage.jsx';
 import { LogPage } from './sections/Log/LogPage.jsx';
 import { Import } from './sections/Import/Import.jsx';
 import { ProfilePage } from './sections/Profile/ProfilePage.jsx';
+import GoogleOAuth from './components/GoogleOAuth.jsx';
 
 const router = createBrowserRouter([
   {
@@ -35,8 +36,8 @@ const router = createBrowserRouter([
         element: <Import />
       },
       {
-        path: "/auth",
-        element: <AuthForm />
+        path: "/login",
+        element: <GoogleOAuth />
       },
       {
         path: "/profile",

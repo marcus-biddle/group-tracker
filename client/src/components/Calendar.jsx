@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import './Calendar.css';
-import { useHeaderData } from '../context/HeaderDataContext';
 import { months } from '../sections/TopNav';
 
 const Calendar = ({ setShowCalendar }) => {
-  const { headerData, setHeaderData } = useHeaderData();
-  console.log(headerData.date)
+
   // Month and year state
-  const [currentYear, setCurrentYear] = useState(headerData.date.year);
-  const [currentMonth, setCurrentMonth] = useState(headerData.date.month);
-  const [currentDay, setCurrentDay] = useState(headerData.date.day)
+  const [currentYear, setCurrentYear] = useState('');
+  const [currentMonth, setCurrentMonth] = useState('');
+  const [currentDay, setCurrentDay] = useState('')
   const [ selectDayMode, setSelectDayMode ] = useState(false);
   const [isMonthListOpen, setIsMonthListOpen] = useState(false);
 
@@ -107,14 +105,7 @@ const Calendar = ({ setShowCalendar }) => {
 //   }
 
   const updateTable = () => {
-    setHeaderData((prev) => ({
-      ...prev,
-      date: {
-        month: currentMonth,
-        year: currentYear,
-        day: currentDay
-      },
-    }));
+
 
     setShowCalendar(false);
   }

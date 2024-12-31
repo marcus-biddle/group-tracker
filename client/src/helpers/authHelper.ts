@@ -1,5 +1,6 @@
 // src/utils/authHelper.ts
 import { jwtDecode } from 'jwt-decode';
+import supabase from '../api/supabase';
 
 // Helper to decode the JWT
 interface DecodedToken {
@@ -35,4 +36,15 @@ export const isTokenExpired = (): boolean => {
 // Helper to check if user is authenticated
 export const isAuthenticated = (): boolean => {
   return !isTokenExpired(); // User is authenticated if token is not expired
+};
+
+export const getUser = async () => {
+  try {
+    const { data, error } = await supabase.auth.getUser();
+
+    return data.user; // Return the user object
+  } catch (err) {
+    console.error('Error fetching user:', err.message);
+    return null; // Return null if there's an error
+  }
 };

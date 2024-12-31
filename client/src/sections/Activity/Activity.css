@@ -1,9 +1,9 @@
 
   
-  .menu {
+  /* .menu {
     filter: drop-shadow(1px 1px 1px #4700b3);
     width: 150px;
-  }
+  } */
   
   ul {
     display: flex;
@@ -25,7 +25,7 @@
     width: 150px;
   }
   
-  button {
+  /* button {
     -webkit-appearance: button;
     background: black;
     color: white;
@@ -41,11 +41,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
+  } */
   
-  button path {
+  /* button path {
     fill: #00B2CC;
-  }
+  } */
   
   
   /* .controls {
