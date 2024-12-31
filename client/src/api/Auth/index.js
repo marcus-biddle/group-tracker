@@ -5,7 +5,7 @@ export const handleGoogleSignIn = async () => {
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
-        redirectTo: '/activity'
+        // redirectTo: '/activity'
       });
 
       if (error) throw error;
